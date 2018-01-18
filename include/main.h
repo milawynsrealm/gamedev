@@ -40,7 +40,7 @@
 #include <shellapi.h>
 #endif /* _WIN32 */
 
-#include "string.h"
+#include "shared.h"
 
 extern int ProgramMain(int argc, WCHAR *argv[]);
 
