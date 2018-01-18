@@ -39,10 +39,9 @@
 #ifdef(_WIN32)
 #include <windef.h>
 #include <shellapi.h>
-#include <wchar.h>
-#else
-typedef WCHAR char;
 #endif /* _WIN32 */
+
+#include "string.h"
 
 extern int ProgramMain(int argc, WCHAR *argv[]);
 
