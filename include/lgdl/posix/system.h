@@ -27,6 +27,10 @@
 #ifndef SYSTEM_POSIX_H
 #define SYSTEM_POSIX_H
 
+#ifndef SYSTEM_H
+#error Please use system.h instead.
+#endif /* SYSTEM_H */
+
 #include <unistd.h>
 #include <limits.h>
 

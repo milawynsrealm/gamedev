@@ -27,6 +27,10 @@
 #ifndef SYSTEM_WIN32_H
 #define SYSTEM_WIN32_H
 
+#ifndef SYSTEM_H
+#error Please use system.h instead.
+#endif /* SYSTEM_H */
+
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>

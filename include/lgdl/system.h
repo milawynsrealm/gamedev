@@ -30,9 +30,9 @@
 #include "shared.h"
 
 #ifdef(_WIN32)
-#include "system_win32.h"
+#include "win32/system.h"
 #else
-#include "system_posix.h"
+#include "posix/system.h"
 #endif /* _WIN32 */
 
 int GetSystemOsName(WCHAR *osName)
