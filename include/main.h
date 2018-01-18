@@ -30,8 +30,7 @@
     * Windows uses 'wchar_t' while other operating systems like GNU/Linux uses
       'char' for parsing the command-line arguments. It is up to the developer(s)
       to deal with both cases.
-    * This library requires Windows 2000 or later, although only Windows XP or later
-      will be officially supported.
+    * This library requires Windows XP or later.
 */
 #ifndef MAIN_H
 #define MAIN_H

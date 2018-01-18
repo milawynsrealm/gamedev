@@ -31,6 +31,8 @@
 
 #ifdef(_WIN32)
 #include "system_win32.h"
+#else
+#include "system_posix.h"
 #endif /* _WIN32 */
 
 /* Used to identify the OS type */
@@ -52,10 +54,10 @@
 #define ARCH_ALPHA   4
 #define ARCH_PPC     5
 
-int GetSystemName(WCHAR *osName)
+int GetSystemOsName(WCHAR *osName)
 {
 #if defined(_WIN32)
-    return GetSystemName_win32(&osName);
+    return GetSystemOsName_win32(&osName);
 #elif defined(__linux__) || defined(__gnu_linux__)
     strcpy(osName, "GNU/Linux");
     return OSNAME_LINUX
@@ -99,6 +101,24 @@ int GetSystemArchitecture(void)
 #else
     return ARCH_NONE;
 #endif /* __i386 */
+}
+
+int GetSystemUserName(WCHAR *userName)
+{
+#if defined(_WIN32)
+    return GetSystemUserName_win32(&userName);
+#else
+    return GetSystemUserName_posix(&userName);
+#endif /* _WIN32 */
+}
+
+int GetSystemComputerName(WHCAR *compName)
+{
+#if defined(_WIN32)
+    return GetSystemComputerName_win32(&compName);
+#else
+    return GetSystemComputerName_posix(&compName);
+#endif /* _WIN32 */
 }
 
 #endif /* SYSTEM_H */

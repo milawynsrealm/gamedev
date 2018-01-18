@@ -24,39 +24,20 @@
 	(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-#ifndef SYSTEM_WIN32_H
-#define SYSTEM_WIN32_H
+#ifndef SYSTEM_POSIX_H
+#define SYSTEM_POSIX_H
 
-#include <windef.h>
-#include <winbase.h>
-#include <winreg.h>
+#include <unistd.h>
+#include <limits.h>
 
-int GetSystemOsName_win32(WCHAR *osName)
+int GetSystemUserName_posix(WCHAR *userName)
 {
-    HKEY hKey;
-    LONG res;
-
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
-        return 1;
-
-    res = RegQueryValueExW(hKey, L"ProductName", NULL, &dwType, (LPBYTE)osName, &dwSize);
-    RegCloseKey(hKey);
-
-    /* If no name is found in the registry, then just use Windows */
-    if (res != ERROR_SUCCESS)
-        wcscpy(osName, L"Windows NT");
-
-    return OSNAME_WINDOWS;
+    return (getlogin_r(&userName, LOGIN_NAME_MAX) == 0 ? 0 : 1);
 }
 
-int GetSystemUserName_win32(WCHAR *userName)
+int GetSystemComputerName_posix(WHCAR *compName)
 {
-    return GetUserName(&userName, UNLEN+1);
+    return (gethostname(&compName, HOST_NAME_MAX) == 0 ? 0 : 1);
 }
 
-int GetSystemComputerName_win32(WHCAR *compName)
-{
-    return GetComputerName(&compName, 32767);
-}
-
-#endif /* SYSTEM_WIN32_H */
+#endif /* SYSTEM_POSIX_H */
