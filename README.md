@@ -1,9 +1,12 @@
 Lee's Game Development Library
 ==============================
 
-This is mostly code that I will create for my own game projects, but you can use it for your own use if you want to. 
-Just note that since everything is a work in progress, there is no promise that anything will work 100%. Good Luck ;)
+This library is designed to provide support for cross-platform game development across several desktop platforms (e.g. Windows, GNU/Linux, BSD, etc.) in a compact and lightweight fashion.
+
+Note for Windows Developers
+===========================
+This library is currently designed to be able to run comfortably in Windows XP or later. Although that version is now considered to be deprecated by most people, the open source development of ["ReactOS"](http://reactos.org/) has for the moment kept that support alive. However, if the kernel target of ReactOS should switch to a later version of Windows, this policy may change.
 
 License
 =======
-Unless otherwise stated, most of this code should be licensed under a BSD License.
+The code is licensed under a Modified BSD License.
