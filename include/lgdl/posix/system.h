@@ -44,4 +44,25 @@ int GetSystemComputerName_posix(WHCAR *compName)
     return (gethostname(&compName, HOST_NAME_MAX) == 0 ? 0 : 1);
 }
 
+DWORDLONG GetSystemTotalMemory_posix(void)
+{
+    long mb_count, page_size;
+    DWORDLONG mb;
+
+    mb_count = sysconf(_SC_PHYS_PAGES);
+    if (mb_count == -1)
+        return 0;
+
+    page_size = sysconf(_SC_PAGE_SIZE);
+    if (page_size == -1)
+        return 0;
+
+    mb = (DWORDLONG)((double)mb_count * (double)page_size / (1024 * 1024));
+
+    /* Round up to the nearest 16Mb */
+    mb = (mb + 8) & ~15;
+
+    return (DWORDLONG)mb;
+}
+
 #endif /* SYSTEM_POSIX_H */

@@ -102,4 +102,13 @@ int GetSystemComputerName(WHCAR *compName)
 #endif /* _WIN32 */
 }
 
+DWORDLONG GetSystemTotalMemory(void)
+{
+#if defined(_WIN32)
+    return GetSystemTotalMemory_win32();
+#else
+    return GetSystemTotalMemory_posix();
+#endif /* _WIN32 */
+}
+
 #endif /* SYSTEM_H */

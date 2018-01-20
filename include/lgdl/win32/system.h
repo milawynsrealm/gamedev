@@ -55,12 +55,23 @@ int GetSystemOsName_win32(WCHAR *osName)
 
 int GetSystemUserName_win32(WCHAR *userName)
 {
-    return GetUserName(&userName, UNLEN+1);
+    return GetUserNameW(&userName, UNLEN+1);
 }
 
 int GetSystemComputerName_win32(WHCAR *compName)
 {
-    return GetComputerName(&compName, 32767);
+    return GetComputerNameW(&compName, 32767);
+}
+
+DWORDLONG GetSystemTotalMemory_win32(void)
+{
+    MEMORYSTATUSEX totalMem;
+
+    totalMem.dwLength = sizeof(totalMem);
+    GlobalMemoryStatusEx(&totalMem);
+
+    /* Returns the total physical memory in kilobytes */
+    return totalMem.ullTotalPhys / 1024;
 }
 
 #endif /* SYSTEM_WIN32_H */

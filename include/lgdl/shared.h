@@ -4,7 +4,8 @@
 #ifdef(_WIN32)
 #include <wchar.h>
 #else
-typedef WCHAR char;
+typedef char WCHAR;
+typedef unsigned __int64 DWORDLONG;
 #endif /* _WIN32 */
 
 /* Used to identify the OS type */
