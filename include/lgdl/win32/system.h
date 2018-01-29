@@ -38,16 +38,16 @@
 int GetSystemOsName_win32(WCHAR *osName)
 {
     HKEY hKey;
-    LONG res;
+    LONG res = ERROR_SUCCESS;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", 0, KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
-        return 1;
-
-    res = RegQueryValueExW(hKey, L"ProductName", NULL, &dwType, (LPBYTE)osName, &dwSize);
-    RegCloseKey(hKey);
+    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+    {
+        res = RegQueryValueExW(hKey, L"ProductName", NULL, &dwType, (LPBYTE)osName, &dwSize);
+        RegCloseKey(hKey);
+    }
 
     /* If no name is found in the registry, then just use Windows */
-    if (res != ERROR_SUCCESS)
+    if ((res != ERROR_SUCCESS) || (wcslen(&osName) == 0))
         wcscpy(osName, L"Windows NT");
 
     return OSNAME_WINDOWS;

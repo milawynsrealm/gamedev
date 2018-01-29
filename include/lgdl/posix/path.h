@@ -26,6 +26,7 @@
 */
 #ifndef PATH_POSIX_H
 #ifndef PATH_POSIX_H
+#ifndef(_WIN32)
 
 #ifndef PATH_H
 #error Please use path.h instead.
@@ -49,4 +50,10 @@ int GetPathHomeDirectory_posix(WCHAR *path)
     return strlen(&path) == 0 ? 1 : 0;
 }
 
+int GetPathAppDirectory_posix(WCHAR *path)
+{
+    return (((readlink("/proc/self/exe", &path, MAX_PATH)) == -1) ? 1 : 0);
+}
+
+#endif /* _WIN32 */
 #endif /* PATH_POSIX_H */

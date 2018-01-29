@@ -35,12 +35,30 @@
 #include "posix/path.h"
 #endif /* _WIN32 */
 
+WCHAR *GetPathDirSeperator(void)
+{
+#ifdef(_WIN32)
+    return L'\\';
+#else
+    return '/';
+#endif /* _WIN32 */
+}
+
 int GetPathHomeDirectory(WCHAR *path)
 {
 #ifdef(_WIN32)
     return GetPathHomeDirectory_win32(&path);
 #else
     return GetPathHomeDirectory_posix(&path);
+#endif /* _WIN32 */
+}
+
+int GetPathAppDirectory(WCHAR *path)
+{
+#ifdef(_WIN32)
+    return GetPathAppDirectory_win32(&path);
+#else
+    return GetPathAppDirectory_posix(&path);
 #endif /* _WIN32 */
 }
 

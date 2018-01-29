@@ -26,6 +26,7 @@
 */
 #ifndef PATH_WIN32_H
 #ifndef PATH_WIN32_H
+#ifdef(_WIN32)
 
 #ifndef PATH_H
 #error Please use path.h instead.
@@ -36,4 +37,9 @@ int GetPathHomeDirectory_win32(WCHAR *path)
     return (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, &path)) ? 0 : 1);
 }
 
+int GetPathAppDirectory_win32(WCHAR *path)
+{
+    return ((GetModuleFileName(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
+}
+#endif /* _WIN32 */
 #endif /* PATH_WIN32_H */
