@@ -32,6 +32,10 @@
 #error Please use path.h instead.
 #endif /* PATH_H */
 
+#include <string.h>
+#include <unistd.h>
+#include <pwd.h>
+
 int GetPathHomeDirectory_posix(WCHAR *path)
 {
     struct passwd *p;

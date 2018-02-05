@@ -32,6 +32,10 @@
 #error Please use path.h instead.
 #endif /* PATH_H */
 
+#include <windef.h>
+#include <winbase.h>
+#include <shlobj.h>
+
 int GetPathHomeDirectory_win32(WCHAR *path)
 {
     return (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, &path)) ? 0 : 1);
