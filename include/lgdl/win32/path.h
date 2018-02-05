@@ -39,7 +39,12 @@ int GetPathHomeDirectory_win32(WCHAR *path)
 
 int GetPathAppDirectory_win32(WCHAR *path)
 {
-    return ((GetModuleFileName(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
+    return ((GetModuleFileNameW(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
+}
+
+int GetPathTempDirectory_win32(WCHAR *path)
+{
+    return ((GetTempPathW(MAX_PATH, &path) == 0) ? 1 : 0);
 }
 #endif /* _WIN32 */
 #endif /* PATH_WIN32_H */

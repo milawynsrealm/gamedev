@@ -39,12 +39,12 @@ int GetPathHomeDirectory_posix(WCHAR *path)
     /* Attempts to get the home directory for the current user */
     p = getpwnam(getlogin());
 
-    /* If the first attempt fails, try to use the environment 
+    /* If the first attempt fails, try to use the environment
        variable as a method of last resort */
     if (p != NULL)
-        strcpy(path, p->pw_dir);
+        strcpy(&path, p->pw_dir);
     else
-        strcpy(path, getenv("HOME"));
+        strcpy(&path, getenv("HOME"));
 
     /* If the length of the string is nothing, assume failure */
     return strlen(&path) == 0 ? 1 : 0;
@@ -53,6 +53,12 @@ int GetPathHomeDirectory_posix(WCHAR *path)
 int GetPathAppDirectory_posix(WCHAR *path)
 {
     return (((readlink("/proc/self/exe", &path, MAX_PATH)) == -1) ? 1 : 0);
+}
+
+int GetPathTempDirectory_posix(WCHAR *path)
+{
+    strcpy(&path, "/tmp");
+    return 0;
 }
 
 #endif /* _WIN32 */

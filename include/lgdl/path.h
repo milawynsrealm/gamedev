@@ -62,4 +62,13 @@ int GetPathAppDirectory(WCHAR *path)
 #endif /* _WIN32 */
 }
 
+int GetPathTempDirectory(WCHAR *path)
+{
+#ifdef(_WIN32)
+    return GetPathTempDirectory_win32(&path);
+#else
+    return GetPathTempDirectory_posix(&path);
+#endif /* _WIN32 */
+}
+
 #endif /* PATH_H */
