@@ -35,7 +35,9 @@
 #include "posix/path.h"
 #endif /* _WIN32 */
 
-WCHAR *GetPathDirSeperator(void)
+/* Windows uses a different path separator 
+   than other operating systems. */
+UNICHAR *GetPathDirSeperator(void)
 {
 #ifdef(_WIN32)
     return L'\\';
@@ -44,7 +46,10 @@ WCHAR *GetPathDirSeperator(void)
 #endif /* _WIN32 */
 }
 
-int GetPathHomeDirectory(WCHAR *path)
+/* Grabs the user's home directory path used 
+   commonly for application settings and save 
+   files */
+int GetPathHomeDirectory(UNICHAR *path)
 {
 #ifdef(_WIN32)
     return GetPathHomeDirectory_win32(&path);
@@ -53,7 +58,9 @@ int GetPathHomeDirectory(WCHAR *path)
 #endif /* _WIN32 */
 }
 
-int GetPathAppDirectory(WCHAR *path)
+/* Grabs the path of the application's current 
+   directory */
+int GetPathAppDirectory(UNICHAR *path)
 {
 #ifdef(_WIN32)
     return GetPathAppDirectory_win32(&path);
@@ -62,7 +69,9 @@ int GetPathAppDirectory(WCHAR *path)
 #endif /* _WIN32 */
 }
 
-int GetPathTempDirectory(WCHAR *path)
+/* Grabs the path used to create temporary files
+   used by programs to run faster */
+int GetPathTempDirectory(UNICHAR *path)
 {
 #ifdef(_WIN32)
     return GetPathTempDirectory_win32(&path);

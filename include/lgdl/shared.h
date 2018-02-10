@@ -2,9 +2,9 @@
 #define SHARED_H
 
 #ifdef(_WIN32)
-#include <wchar.h>
+typedef wchar_t UNICHAR;
 #else
-typedef char WCHAR;
+typedef char UNICHAR;
 typedef unsigned __int64 DWORDLONG;
 #endif /* _WIN32 */
 

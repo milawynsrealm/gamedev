@@ -24,44 +24,21 @@
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-/*
-    NOTES:
-    * wWinMain() is the UNICODE version of the main program entry for Windows.
-    * Windows uses 'wchar_t' while other operating systems like GNU/Linux uses
-      'char' for parsing the command-line arguments. It is up to the developer(s)
-      to deal with both cases.
-    * This library requires Windows XP or later.
-*/
-#ifndef MAIN_H
-#define MAIN_H
 
-#ifdef(_WIN32)
-#include <windef.h>
-#include <shellapi.h>
-#endif /* _WIN32 */
+struct option {
+    const UNICHAR *name;
+    int         has_arg;
+    int        *flag;
+    int         val;
+};
 
-#include "shared.h"
-
-/* Reference to the main entry point of the application. Must be manually defined by the developer. */
-extern int ProgramMain(int argc, WCHAR *argv[]);
-
-#ifdef(_WIN32)
-/* wWinMain() is used instead of the standard WinMain() since modern windows applications are all UNICODE
-   and need to be able to work with languages not supported with the deprecated ANSI standard */
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
+int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
 {
-    int argc;
-    WCHAR** argv;
-
-    /* Converts the command line into a usable format */
-    argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-
-    return ProgramMain(argc, argv[]);
+    return 0;
 }
-#else
-int main(int argc, char *argv[])
+
+int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const struct option *longopts, int *indexptr)
 {
-    return ProgramMain(argc, argv);
+    return 0;
 }
-#endif /* _WIN32 */
-#endif /* MAIN_H */
+

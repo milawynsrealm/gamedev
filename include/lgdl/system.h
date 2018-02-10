@@ -35,7 +35,8 @@
 #include "posix/system.h"
 #endif /* _WIN32 */
 
-int GetSystemOsName(WCHAR *osName)
+/* Grabs the Operating System's name */
+int GetSystemOsName(UNICHAR *osName)
 {
 #if defined(_WIN32)
     return GetSystemOsName_win32(&osName);
@@ -65,6 +66,8 @@ int GetSystemOsName(WCHAR *osName)
 #endif
 }
 
+/* Grabs the type of system architecture the
+   program is running on */
 int GetSystemArchitecture(void)
 {
 #if defined(__i386) || defined(_M_IX86)
@@ -84,7 +87,8 @@ int GetSystemArchitecture(void)
 #endif /* __i386 */
 }
 
-int GetSystemUserName(WCHAR *userName)
+/* Determines what the user's name is */
+int GetSystemUserName(UNICHAR *userName)
 {
 #if defined(_WIN32)
     return GetSystemUserName_win32(&userName);
@@ -93,7 +97,8 @@ int GetSystemUserName(WCHAR *userName)
 #endif /* _WIN32 */
 }
 
-int GetSystemComputerName(WHCAR *compName)
+/* Grabs the name of the computer */
+int GetSystemComputerName(UNICHAR *compName)
 {
 #if defined(_WIN32)
     return GetSystemComputerName_win32(&compName);
@@ -102,6 +107,8 @@ int GetSystemComputerName(WHCAR *compName)
 #endif /* _WIN32 */
 }
 
+/* Determines how much system memory is 
+   available overall */
 DWORDLONG GetSystemTotalMemory(void)
 {
 #if defined(_WIN32)
