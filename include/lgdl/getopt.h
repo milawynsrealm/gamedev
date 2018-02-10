@@ -24,6 +24,10 @@
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+#ifndef LGDL_GETOPT_H
+#define LGDL_GETOPT_H
+
+#include "shared.h"
 
 struct option {
     const UNICHAR *name;
@@ -42,3 +46,4 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
     return 0;
 }
 
+#endif /* LGDL_GETOPT_H */
