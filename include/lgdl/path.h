@@ -27,12 +27,17 @@
 #ifndef PATH_H
 #define PATH_H
 
+#include <stdio.h>
 #include "shared.h"
 
 #ifdef(_WIN32)
 #include "win32/path.h"
+
+#define FileOpen _wfopen
 #else
 #include "posix/path.h"
+
+#define FileOpen fopen
 #endif /* _WIN32 */
 
 /* Windows uses a different path separator 

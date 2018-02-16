@@ -38,7 +38,7 @@
 
 int GetPathHomeDirectory_win32(WCHAR *path)
 {
-    return (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_APPDATA, NULL, 0, &path)) ? 0 : 1);
+    return (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, &path)) ? 0 : 1);
 }
 
 int GetPathAppDirectory_win32(WCHAR *path)
