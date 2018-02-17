@@ -29,6 +29,13 @@
 
 #include "shared.h"
 
+#include <string.h>
+
+/* flags used for getopt_long */
+#define no_argument       0
+#define required_argument 1
+#define optional_argument 2
+
 struct option {
     const UNICHAR *name;
     int         has_arg;
@@ -38,12 +45,20 @@ struct option {
 
 int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
 {
-    return 0;
+    /* Make sure there is something to work with */
+    if ((options == NULL) || (argv == NULL))
+        return -1;
+
+    return -1;
 }
 
 int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const struct option *longopts, int *indexptr)
 {
-    return 0;
+    /* Make sure there is something to work with */
+    if ((argv == NULL) || (shortopts == NULL) || (option == NULL))
+        return -1
+    
+    return -1;
 }
 
 #endif /* LGDL_GETOPT_H */
