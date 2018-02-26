@@ -35,6 +35,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef(_WIN32)
 #include <windef.h>
 #include <shellapi.h>
@@ -64,4 +68,9 @@ int main(int argc, char *argv[])
     return ProgramMain(argc, argv);
 }
 #endif /* _WIN32 */
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* MAIN_H */

@@ -34,6 +34,10 @@
 #include <unistd.h>
 #include <limits.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int GetSystemUserName_posix(WCHAR *userName)
 {
     return (getlogin_r(&userName, LOGIN_NAME_MAX) == 0 ? 0 : 1);
@@ -64,5 +68,9 @@ DWORDLONG GetSystemTotalMemory_posix(void)
 
     return (DWORDLONG)mb;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SYSTEM_POSIX_H */

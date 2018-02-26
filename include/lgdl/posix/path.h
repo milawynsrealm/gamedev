@@ -36,6 +36,10 @@
 #include <unistd.h>
 #include <pwd.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int GetPathHomeDirectory_posix(WCHAR *path)
 {
     struct passwd *p;
@@ -64,6 +68,10 @@ int GetPathTempDirectory_posix(WCHAR *path)
     strcpy(&path, "/tmp");
     return 0;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _WIN32 */
 #endif /* PATH_POSIX_H */

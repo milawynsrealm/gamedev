@@ -35,6 +35,10 @@
 #include "posix/system.h"
 #endif /* _WIN32 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
@@ -117,5 +121,9 @@ DWORDLONG GetSystemTotalMemory(void)
     return GetSystemTotalMemory_posix();
 #endif /* _WIN32 */
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* SYSTEM_H */

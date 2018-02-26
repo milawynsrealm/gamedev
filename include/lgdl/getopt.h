@@ -31,6 +31,10 @@
 
 #include <string.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* flags used for getopt_long */
 #define no_argument       0
 #define required_argument 1
@@ -60,5 +64,9 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
     
     return -1;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LGDL_GETOPT_H */

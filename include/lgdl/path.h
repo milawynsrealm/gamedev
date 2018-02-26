@@ -40,6 +40,10 @@
 #define FileOpen fopen
 #endif /* _WIN32 */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Windows uses a different path separator 
    than other operating systems. */
 UNICHAR *GetPathDirSeperator(void)
@@ -84,5 +88,9 @@ int GetPathTempDirectory(UNICHAR *path)
     return GetPathTempDirectory_posix(&path);
 #endif /* _WIN32 */
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* PATH_H */

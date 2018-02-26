@@ -36,6 +36,10 @@
 #include <winbase.h>
 #include <shlobj.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int GetPathHomeDirectory_win32(WCHAR *path)
 {
     return (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, &path)) ? 0 : 1);
@@ -50,5 +54,10 @@ int GetPathTempDirectory_win32(WCHAR *path)
 {
     return ((GetTempPathW(MAX_PATH, &path) == 0) ? 1 : 0);
 }
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif /* _WIN32 */
 #endif /* PATH_WIN32_H */

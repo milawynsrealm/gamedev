@@ -26,6 +26,7 @@
 */
 #ifndef SYSTEM_WIN32_H
 #define SYSTEM_WIN32_H
+#ifdef(_WIN32)
 
 #ifndef SYSTEM_H
 #error Please use system.h instead.
@@ -34,6 +35,10 @@
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 int GetSystemOsName_win32(WCHAR *osName)
 {
@@ -74,4 +79,9 @@ DWORDLONG GetSystemTotalMemory_win32(void)
     return totalMem.ullTotalPhys / 1024;
 }
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _WIN32 */
 #endif /* SYSTEM_WIN32_H */
