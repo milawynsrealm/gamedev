@@ -33,9 +33,17 @@ extern "C" {
 
 #ifdef(_WIN32)
 typedef wchar_t UNICHAR;
+
+#define fileopen _wfopen
+
+#define _T(x) L##x
 #else
 typedef char UNICHAR;
 typedef unsigned __int64 DWORDLONG;
+
+#define fileopen fopen
+
+#define _T(x) x
 #endif /* _WIN32 */
 
 /* Used to identify the OS type */
