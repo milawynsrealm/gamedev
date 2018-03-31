@@ -40,7 +40,7 @@
 extern "C" {
 #endif
 
-int GetSystemOsName_win32(WCHAR *osName)
+int GetSystemOsName_win32(UNICHAR *osName)
 {
     HKEY hKey;
     LONG res = ERROR_SUCCESS;
@@ -58,12 +58,12 @@ int GetSystemOsName_win32(WCHAR *osName)
     return OSNAME_WINDOWS;
 }
 
-int GetSystemUserName_win32(WCHAR *userName)
+int GetSystemUserName_win32(UNICHAR *userName)
 {
     return GetUserNameW(&userName, UNLEN+1);
 }
 
-int GetSystemComputerName_win32(WHCAR *compName)
+int GetSystemComputerName_win32(UNICHAR *compName)
 {
     return GetComputerNameW(&compName, 32767);
 }
@@ -71,12 +71,48 @@ int GetSystemComputerName_win32(WHCAR *compName)
 DWORDLONG GetSystemTotalMemory_win32(void)
 {
     MEMORYSTATUSEX totalMem;
+    int finalmemory = 0;
 
     totalMem.dwLength = sizeof(totalMem);
     GlobalMemoryStatusEx(&totalMem);
 
     /* Returns the total physical memory in kilobytes */
     return totalMem.ullTotalPhys / 1024;
+}
+
+int IsMinimumOS_win32(void)
+{
+    OSVERSIONINFOEX osInfo;
+
+	ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
+    osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    /* The program is not designed to run on Windows 3.11 or earlier */
+    if(osInfo.dwPlatformId == VER_PLATFORM_WIN32s)
+        return 1;
+
+	/* Check to make sure that the program is running in Windows XP or later */
+	if(osInfo.dwMajorVersion < 5)
+		return 1;
+
+    return 0;
+}
+
+APP_INSTANCE CreateSingleAppInstance_win32(UNICHAR *instance_name)
+{
+    HANDLE checkInstance;
+    checkInstance = CreateMutex(NULL, FALSE, instance_name);
+
+    /* If there is already an instance of the program, then return true */
+    if((GetLastError() == ERROR_ALREADY_EXISTS)||(GetLastError() == ERROR_ACCESS_DENIED))
+        return NULL;
+
+    return checkInstance;
+}
+
+void DestroySingleAppInstance_win32(APP_INSTANCE instance)
+{
+    CloseHandle(instance);
 }
 
 #ifdef __cplusplus

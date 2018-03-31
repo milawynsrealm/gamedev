@@ -38,12 +38,12 @@
 extern "C" {
 #endif
 
-int GetSystemUserName_posix(WCHAR *userName)
+int GetSystemUserName_posix(UNICHAR *userName)
 {
     return (getlogin_r(&userName, LOGIN_NAME_MAX) == 0 ? 0 : 1);
 }
 
-int GetSystemComputerName_posix(WHCAR *compName)
+int GetSystemComputerName_posix(UNICHAR *compName)
 {
     return (gethostname(&compName, HOST_NAME_MAX) == 0 ? 0 : 1);
 }
@@ -67,6 +67,24 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     mb = (mb + 8) & ~15;
 
     return (DWORDLONG)mb;
+}
+
+APP_INSTANCE CreateSingleAppInstance_posix(UNICHAR *instance_name)
+{
+    sem_t *testSem;
+    testSem = sem_open(instance_name, O_CREAT | O_EXCL);
+
+    /* Check to see if there is another instance of the program running */
+    if(testSem != NULL)
+        return NULL;
+
+    return testSem;
+}
+
+void DestroySingleAppInstance_win32(UNICHAR *instance_name, APP_INSTANCE instance)
+{
+    sem_unlink(instance_name);
+    sem_close(instance);
 }
 
 #ifdef __cplusplus

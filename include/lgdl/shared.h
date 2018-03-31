@@ -33,6 +33,7 @@ extern "C" {
 
 #ifdef(_WIN32)
 typedef wchar_t UNICHAR;
+typedef HANDLE APP_INSTANCE;
 
 #define fileopen _wfopen
 
@@ -40,6 +41,7 @@ typedef wchar_t UNICHAR;
 #else
 typedef char UNICHAR;
 typedef unsigned __int64 DWORDLONG;
+typedef sem_t* APP_INSTANCE;
 
 #define fileopen fopen
 

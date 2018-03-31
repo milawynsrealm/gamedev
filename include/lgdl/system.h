@@ -37,7 +37,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif
+#endif /* __cplusplus */
 
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
@@ -122,8 +122,45 @@ DWORDLONG GetSystemTotalMemory(void)
 #endif /* _WIN32 */
 }
 
+/* Make sure the system is a certain version or later */
+int IsMinimumOS(void)
+{
+#if defined(_WIN32)
+    return IsMinimumOS_win32();
+#else
+    return 0;
+#endif /* _WIN32 */
+}
+
+APP_INSTANCE CreateSingleAppInstance(UNICHAR *instance_name)
+{
+    /* A name is needed to be successful */
+    if (instance_name == NULL)
+        return 1;
+
+#if defined(_WIN32)
+    return CreateSingleAppInstance_win32(UNICHAR *instance_name);
+#else
+    return CreateSingleAppInstance_posix(UNICHAR *instance_name);
+#endif /* _WIN32 */
+}
+
+int DestroySingleAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
+{
+    /* Make sure there's an instance name to work with since 
+       POSIX-based systems need it for reference */
+    if (instance_name == NULL)
+        return 1;
+
+#if defined(_WIN32)
+    return DestroySingleAppInstance_win32(instance);
+#else
+    return DestroySingleAppInstance_win32(&instance_name, instance);
+#endif /* _WIN32 */
+}
+
 #ifdef __cplusplus
 }
-#endif
+#endif /* __cplusplus */
 
 #endif /* SYSTEM_H */

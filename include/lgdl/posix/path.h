@@ -60,6 +60,7 @@ int GetPathHomeDirectory_posix(WCHAR *path)
 
 int GetPathAppDirectory_posix(WCHAR *path)
 {
+    /* Grabs the path of the program's location */
     return (((readlink("/proc/self/exe", &path, MAX_PATH)) == -1) ? 1 : 0);
 }
 
