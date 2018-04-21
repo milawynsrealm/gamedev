@@ -36,6 +36,7 @@ typedef wchar_t UNICHAR;
 typedef HANDLE APP_INSTANCE;
 
 #define fileopen _wfopen
+#define stringlength wcslen
 
 #define _T(x) L##x
 #else
@@ -44,6 +45,7 @@ typedef unsigned __int64 DWORDLONG;
 typedef sem_t* APP_INSTANCE;
 
 #define fileopen fopen
+#define stringlength strlen
 
 #define _T(x) x
 #endif /* _WIN32 */

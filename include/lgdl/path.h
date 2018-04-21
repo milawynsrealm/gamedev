@@ -58,12 +58,12 @@ UNICHAR *GetPathDirSeperator(void)
 /* Grabs the user's home directory path used 
    commonly for application settings and save 
    files */
-int GetPathHomeDirectory(UNICHAR *path)
+int GetPathHomeDirectory(UNICHAR *path, UNICHAR *folderName)
 {
 #ifdef(_WIN32)
-    return GetPathHomeDirectory_win32(&path);
+    return GetPathHomeDirectory_win32(&path, &folderName);
 #else
-    return GetPathHomeDirectory_posix(&path);
+    return GetPathHomeDirectory_posix(&path, &folderName);
 #endif /* _WIN32 */
 }
 

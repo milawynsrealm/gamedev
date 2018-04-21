@@ -40,31 +40,37 @@
 extern "C" {
 #endif
 
-int GetPathHomeDirectory_posix(WCHAR *path)
+int GetPathHomeDirectory_posix(UNICHAR *path, UNICHAR *folderName)
 {
-    struct passwd *p;
+#if defined (__APPLE__) && defined(__MACH__)
+    strcpy(&path, getenv("HOME"));
+    strcat(&path, "Library/Application Support/");
+    strcat(&path, folderName);
+#else
+    strcpy(&path, getenv("XDG_DATA_HOME"));
 
-    /* Attempts to get the home directory for the current user */
-    p = getpwnam(getlogin());
-
-    /* If the first attempt fails, try to use the environment
-       variable as a method of last resort */
-    if (p != NULL)
-        strcpy(&path, p->pw_dir);
-    else
+    if (strlen(&path) == 0)
         strcpy(&path, getenv("HOME"));
+
+    /* Add the folder name */
+    if ((strlen(&path) != 0) && (folderName != NULL))
+    {
+        strcat(&path, ".");
+        strcat(&path, folderName);
+    }
+#endif /* __APPLE__ */
 
     /* If the length of the string is nothing, assume failure */
     return strlen(&path) == 0 ? 1 : 0;
 }
 
-int GetPathAppDirectory_posix(WCHAR *path)
+int GetPathAppDirectory_posix(UNICHAR *path)
 {
     /* Grabs the path of the program's location */
     return (((readlink("/proc/self/exe", &path, MAX_PATH)) == -1) ? 1 : 0);
 }
 
-int GetPathTempDirectory_posix(WCHAR *path)
+int GetPathTempDirectory_posix(UNICHAR *path)
 {
     strcpy(&path, "/tmp");
     return 0;
@@ -74,5 +80,5 @@ int GetPathTempDirectory_posix(WCHAR *path)
 }
 #endif
 
-#endif /* _WIN32 */
+#endif /* !_WIN32 */
 #endif /* PATH_POSIX_H */

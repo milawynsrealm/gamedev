@@ -40,6 +40,16 @@ extern "C" {
 #define required_argument 1
 #define optional_argument 2
 
+/* If the function fails, this value is set to the proper error code */
+int opterr = 0;
+
+/* If the option isn't found in options, then store the value here */
+int optopt = 0;
+
+/* Used to grab the argument value */
+UNICHAR *optarg = NULL;
+
+/* This structure is used in getopt_long */
 struct option {
     const UNICHAR *name;
     int         has_arg;
@@ -49,8 +59,10 @@ struct option {
 
 int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
 {
+    int optLength = stringlength(options);
+
     /* Make sure there is something to work with */
-    if ((options == NULL) || (argv == NULL))
+    if ((options == NULL) || (argv == NULL) || (optLength == 0))
         return -1;
 
     return -1;
@@ -58,8 +70,11 @@ int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
 
 int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const struct option *longopts, int *indexptr)
 {
+    int optLength = stringlength(shortopts);
+
     /* Make sure there is something to work with */
-    if ((argv == NULL) || (shortopts == NULL) || (option == NULL))
+    if ((argv == NULL) || (shortopts == NULL) ||
+        (option == NULL) || (optLength == 0))
         return -1
     
     return -1;

@@ -35,7 +35,7 @@ extern "C" {
 
 FILE *DebugOpen(UNICHAR *file)
 {
-    return fileopen(&file, _T("w, ccs=UTF-16LE"));
+    return fileopen(&file, _T("w, ccs=UTF-8"));
 }
 
 int DebugPuts(FILE *file, UNICHAR *string)
