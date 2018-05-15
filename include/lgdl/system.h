@@ -155,7 +155,7 @@ int DestroySingleAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
 #if defined(_WIN32)
     return DestroySingleAppInstance_win32(instance);
 #else
-    return DestroySingleAppInstance_win32(&instance_name, instance);
+    return DestroySingleAppInstance_posix(&instance_name, instance);
 #endif /* _WIN32 */
 }
 

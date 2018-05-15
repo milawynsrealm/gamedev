@@ -71,7 +71,6 @@ int GetSystemComputerName_win32(UNICHAR *compName)
 DWORDLONG GetSystemTotalMemory_win32(void)
 {
     MEMORYSTATUSEX totalMem;
-    int finalmemory = 0;
 
     totalMem.dwLength = sizeof(totalMem);
     GlobalMemoryStatusEx(&totalMem);
@@ -87,15 +86,14 @@ int IsMinimumOS_win32(void)
 	ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
     osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
-    /* The program is not designed to run on Windows 3.11 or earlier */
-    if(osInfo.dwPlatformId == VER_PLATFORM_WIN32s)
-        return 1;
+    GetVersionEx(&osInfo);
 
 	/* Check to make sure that the program is running in Windows XP or later */
-	if(osInfo.dwMajorVersion < 5)
-		return 1;
+	if ((osInfo.dwMajorVersion < 5) ||
+       ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
+		return 0;
 
-    return 0;
+    return 1;
 }
 
 APP_INSTANCE CreateSingleAppInstance_win32(UNICHAR *instance_name)
@@ -104,7 +102,7 @@ APP_INSTANCE CreateSingleAppInstance_win32(UNICHAR *instance_name)
     checkInstance = CreateMutex(NULL, FALSE, instance_name);
 
     /* If there is already an instance of the program, then return true */
-    if((GetLastError() == ERROR_ALREADY_EXISTS)||(GetLastError() == ERROR_ACCESS_DENIED))
+    if ((GetLastError() == ERROR_ALREADY_EXISTS)||(GetLastError() == ERROR_ACCESS_DENIED))
         return NULL;
 
     return checkInstance;

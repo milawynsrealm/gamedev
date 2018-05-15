@@ -81,7 +81,7 @@ APP_INSTANCE CreateSingleAppInstance_posix(UNICHAR *instance_name)
     return testSem;
 }
 
-void DestroySingleAppInstance_win32(UNICHAR *instance_name, APP_INSTANCE instance)
+void DestroySingleAppInstance_posix(UNICHAR *instance_name, APP_INSTANCE instance)
 {
     sem_unlink(instance_name);
     sem_close(instance);

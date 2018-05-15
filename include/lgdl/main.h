@@ -51,8 +51,14 @@ extern int ProgramMain(int argc, UNICHAR *argv[]);
 
 #ifdef(_WIN32)
 /* wWinMain() is used instead of the standard WinMain() since modern windows applications are all UNICODE
-   and need to be able to work with languages not supported with the deprecated ANSI standard */
+   and need to be able to work with languages not supported with the deprecated ANSI standard. However, there
+   is an optional FORCE_ANSI_MAIN compile flag just in case the developer has to use it or the compiler cannot
+   use wWinMain() for some reason. */
+#ifdef FORCE_ANSI_MAIN
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
+#else
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
+#endif /* FORCE_ANSI_MAIN */
 {
     int argc;
     WCHAR** argv;
