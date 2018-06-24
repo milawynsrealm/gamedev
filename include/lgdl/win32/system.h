@@ -101,7 +101,7 @@ APP_INSTANCE CreateSingleAppInstance_win32(UNICHAR *instance_name)
     HANDLE checkInstance;
     checkInstance = CreateMutex(NULL, FALSE, instance_name);
 
-    /* If there is already an instance of the program, then return true */
+    /* If there is already an instance of the program, then return null */
     if ((GetLastError() == ERROR_ALREADY_EXISTS)||(GetLastError() == ERROR_ACCESS_DENIED))
         return NULL;
 

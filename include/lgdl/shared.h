@@ -37,6 +37,11 @@ typedef HANDLE APP_INSTANCE;
 
 #define fileopen _wfopen
 #define stringlength wcslen
+#define stringcopy wcscpy
+#define stringncompare wcsncmp
+#define stringcompare wcscmp
+#define findstring wcschr
+#define stringspan wcscspn
 
 #define _T(x) L##x
 #else
@@ -46,6 +51,11 @@ typedef sem_t* APP_INSTANCE;
 
 #define fileopen fopen
 #define stringlength strlen
+#define stringcopy strcpy
+#define stringncompare strncmp
+#define stringcompare strcmp
+#define findstring strchr
+#define stringspan strcspn
 
 #define _T(x) x
 #endif /* _WIN32 */
