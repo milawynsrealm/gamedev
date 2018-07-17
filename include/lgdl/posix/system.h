@@ -31,22 +31,9 @@
 #error Please use system.h instead.
 #endif /* SYSTEM_H */
 
-#include <unistd.h>
-#include <limits.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-int GetSystemUserName_posix(UNICHAR *userName)
-{
-    return (getlogin_r(&userName, LOGIN_NAME_MAX) == 0 ? 0 : 1);
-}
-
-int GetSystemComputerName_posix(UNICHAR *compName)
-{
-    return (gethostname(&compName, HOST_NAME_MAX) == 0 ? 0 : 1);
-}
 
 DWORDLONG GetSystemTotalMemory_posix(void)
 {
@@ -61,6 +48,7 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     if (page_size == -1)
         return 0;
 
+    /* Calculate the total system memory into something more consistent */
     mb = (DWORDLONG)((double)mb_count * (double)page_size / (1024 * 1024));
 
     /* Round up to the nearest 16Mb */
@@ -69,13 +57,13 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     return (DWORDLONG)mb;
 }
 
-APP_INSTANCE CreateSingleAppInstance_posix(UNICHAR *instance_name)
+APP_INSTANCE CreateSingleAppInstance_posix(char *instance_name)
 {
     sem_t *testSem;
     testSem = sem_open(instance_name, O_CREAT | O_EXCL);
 
     /* Check to see if there is another instance of the program running */
-    if(testSem != NULL)
+    if ((testSem == SEM_FAILED) && (errno == EEXIST))
         return NULL;
 
     return testSem;

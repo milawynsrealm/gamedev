@@ -30,8 +30,14 @@
 #include "shared.h"
 
 #ifdef(_WIN32)
+#include <windef.h>
+#include <winbase.h>
+#include <winreg.h>
 #include "win32/system.h"
 #else
+#include <unistd.h>
+#include <limits.h>
+#include <errno.h>
 #include "posix/system.h"
 #endif /* _WIN32 */
 
@@ -95,9 +101,9 @@ int GetSystemArchitecture(void)
 int GetSystemUserName(UNICHAR *userName)
 {
 #if defined(_WIN32)
-    return GetSystemUserName_win32(&userName);
+    return GetUserNameW(&userName, UNLEN+1);
 #else
-    return GetSystemUserName_posix(&userName);
+    return ((getlogin_r(&userName, LOGIN_NAME_MAX) == 0) ? 0 : 1);
 #endif /* _WIN32 */
 }
 
@@ -105,9 +111,9 @@ int GetSystemUserName(UNICHAR *userName)
 int GetSystemComputerName(UNICHAR *compName)
 {
 #if defined(_WIN32)
-    return GetSystemComputerName_win32(&compName);
+    return GetComputerNameW(&compName, 32767);
 #else
-    return GetSystemComputerName_posix(&compName);
+    return ((gethostname(&compName, HOST_NAME_MAX)) == 0 ? 0 : 1);
 #endif /* _WIN32 */
 }
 
@@ -132,16 +138,16 @@ int IsMinimumOS(void)
 #endif /* _WIN32 */
 }
 
-APP_INSTANCE CreateSingleAppInstance(UNICHAR *instance_name)
+APP_INSTANCE CreateSingleAppInstance(char *instance_name)
 {
     /* A name is needed to be successful */
     if (instance_name == NULL)
         return 1;
 
 #if defined(_WIN32)
-    return CreateSingleAppInstance_win32(UNICHAR *instance_name);
+    return CreateSingleAppInstance_win32(char *instance_name);
 #else
-    return CreateSingleAppInstance_posix(UNICHAR *instance_name);
+    return CreateSingleAppInstance_posix(char *instance_name);
 #endif /* _WIN32 */
 }
 

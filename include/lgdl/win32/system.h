@@ -32,10 +32,6 @@
 #error Please use system.h instead.
 #endif /* SYSTEM_H */
 
-#include <windef.h>
-#include <winbase.h>
-#include <winreg.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -58,16 +54,6 @@ int GetSystemOsName_win32(UNICHAR *osName)
     return OSNAME_WINDOWS;
 }
 
-int GetSystemUserName_win32(UNICHAR *userName)
-{
-    return GetUserNameW(&userName, UNLEN+1);
-}
-
-int GetSystemComputerName_win32(UNICHAR *compName)
-{
-    return GetComputerNameW(&compName, 32767);
-}
-
 DWORDLONG GetSystemTotalMemory_win32(void)
 {
     MEMORYSTATUSEX totalMem;
@@ -83,26 +69,28 @@ int IsMinimumOS_win32(void)
 {
     OSVERSIONINFOEX osInfo;
 
-	ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
+    ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
     osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
     GetVersionEx(&osInfo);
 
-	/* Check to make sure that the program is running in Windows XP or later */
-	if ((osInfo.dwMajorVersion < 5) ||
+    /* Check to make sure that the program is running in Windows XP or later */
+    if ((osInfo.dwMajorVersion < 5) ||
        ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
-		return 0;
+        return 0;
 
     return 1;
 }
 
-APP_INSTANCE CreateSingleAppInstance_win32(UNICHAR *instance_name)
+APP_INSTANCE CreateSingleAppInstance_win32(char *instance_name)
 {
-    HANDLE checkInstance;
-    checkInstance = CreateMutex(NULL, FALSE, instance_name);
+    HANDLE checkInstance = NULL;
+    
+    /* The instance name is internal, there's no need for a UNICODE string here */
+    checkInstance = CreateMutexA(NULL, FALSE, instance_name);
 
     /* If there is already an instance of the program, then return null */
-    if ((GetLastError() == ERROR_ALREADY_EXISTS)||(GetLastError() == ERROR_ACCESS_DENIED))
+    if ((GetLastError() == ERROR_ALREADY_EXISTS) || (GetLastError() == ERROR_ACCESS_DENIED))
         return NULL;
 
     return checkInstance;
