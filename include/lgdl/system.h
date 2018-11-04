@@ -76,6 +76,15 @@ int GetSystemOsName(UNICHAR *osName)
 #endif
 }
 
+int GetSystemAppName(UNICHAR *appName)
+{
+#if defined(_WIN32)
+    return ((GetModuleFileName(NULL, &appName, MAX_PATH) == 0) ? 1 : 0);
+#else
+    return GetSystemAppName_posix(&appName);
+#endif
+}
+
 /* Grabs the type of system architecture the
    program is running on */
 int GetSystemArchitecture(void)

@@ -1,6 +1,6 @@
 /*
     Copyright (c) 2012-2017, Kim Grasman <kim.grasman@gmail.com>
-    Copyright (c) 2018, Lee Schroeder
+    Copyright (c) 2018, Lee Schroeder <spaceseel at gmail dot com>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -42,13 +42,13 @@ extern "C" {
 #define optional_argument 2
 
 /* If the function fails, this value is set to the proper error code */
-int opterr;
+int opterr = 0;
 
 /* This must be set to 1 before any other call is made */
 int optind = 1;
 
 /* If the option isn't found in options, then store the value here */
-int optopt;
+int optopt = 0;
 
 /* Used to grab the argument value */
 UNICHAR *optarg = NULL;

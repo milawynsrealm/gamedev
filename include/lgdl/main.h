@@ -68,7 +68,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
     return ProgramMain(argc, argv[]);
 }
-#else
+#else /* POSIX-based systems (Linux, BSD, etc.) */
 int main(int argc, char *argv[])
 {
     return ProgramMain(argc, argv);

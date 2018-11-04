@@ -35,6 +35,14 @@
 extern "C" {
 #endif
 
+int GetSystemAppName_posix(char *appName)
+{
+    char file[256];
+    
+    sprintf(file, "/proc/%d/exe", getpid());
+    return ((readlink(file, &appName, MAX_PATH) == -1) ? 1 : 0);
+}
+
 DWORDLONG GetSystemTotalMemory_posix(void)
 {
     long mb_count, page_size;
