@@ -51,8 +51,7 @@ int GetSystemOsName(UNICHAR *osName)
 #if defined(_WIN32)
     return GetSystemOsName_win32(&osName);
 #elif defined(__linux__) || defined(__gnu_linux__)
-    strcpy(osName, "GNU/Linux");
-    return OSNAME_LINUX
+    return GetSystemOsName_linux(&osName);
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
   defined(__NetBSD__) || defined(__bsdi__) || \
   defined(__DragonFly__)

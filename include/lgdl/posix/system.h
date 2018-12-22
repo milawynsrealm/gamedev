@@ -35,12 +35,39 @@
 extern "C" {
 #endif
 
+#if defined(__linux__) || defined(__gnu_linux__)
+#include <sys/utsname.h>
+
+int GetSystemOsName_linux(UNICHAR *osName)
+{
+    struct utsname unameData;
+
+    uname(&unameData);
+    if (unameData == 0)
+    {
+        strcpy(osName, unameData.sysname);
+        strcat(osName, " ");
+        strcat(osName, unameData.release);
+    }
+    else
+        strcpy(osName, "GNU/Linux");
+
+    return OSNAME_LINUX
+}
+#endif /* GNU/Linux */
+
 int GetSystemAppName_posix(char *appName)
 {
-    char file[256];
-    
-    sprintf(file, "/proc/%d/exe", getpid());
-    return ((readlink(file, &appName, MAX_PATH) == -1) ? 1 : 0);
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__bsdi__) || defined(__DragonFly__)
+    strcpy(appName, getprogname());
+    return ((appName == NULL) ? 1 : 0);
+#elif defined(__linux__) || defined(__gnu_linux__)
+    extern char *program_invocation_short_name;
+    return ((strcpy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
+#else
+    #error System is not supported!
+    return 1;
+#endif
 }
 
 DWORDLONG GetSystemTotalMemory_posix(void)
