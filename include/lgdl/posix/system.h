@@ -45,12 +45,12 @@ int GetSystemOsName_linux(UNICHAR *osName)
     uname(&unameData);
     if (unameData == 0)
     {
-        strcpy(osName, unameData.sysname);
-        strcat(osName, " ");
-        strcat(osName, unameData.release);
+        stringcopy(osName, unameData.sysname);
+        stringcat(osName, " ");
+        stringcat(osName, unameData.release);
     }
     else
-        strcpy(osName, "GNU/Linux");
+        stringcopy(osName, _T("GNU/Linux"));
 
     return OSNAME_LINUX
 }
@@ -58,14 +58,15 @@ int GetSystemOsName_linux(UNICHAR *osName)
 
 int GetSystemAppName_posix(char *appName)
 {
-#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__bsdi__) || defined(__DragonFly__)
-    strcpy(appName, getprogname());
+#if defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__) || defined(__bsdi__) || defined(__DragonFly__) \
+    defined(__APPLE__) && defined(__MACH__) /* Both BSD and OSX use this method */
+    stringcopy(appName, getprogname());
     return ((appName == NULL) ? 1 : 0);
 #elif defined(__linux__) || defined(__gnu_linux__)
     extern char *program_invocation_short_name;
-    return ((strcpy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
+    return ((stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
 #else
-    #error System is not supported!
+    //System is not supported!
     return 1;
 #endif
 }
@@ -75,10 +76,12 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     long mb_count, page_size;
     DWORDLONG mb;
 
+    /* Count the number of physical pages */
     mb_count = sysconf(_SC_PHYS_PAGES);
     if (mb_count == -1)
         return 0;
 
+    /* Counts the page size */
     page_size = sysconf(_SC_PAGE_SIZE);
     if (page_size == -1)
         return 0;
@@ -92,9 +95,11 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     return (DWORDLONG)mb;
 }
 
-APP_INSTANCE CreateSingleAppInstance_posix(char *instance_name)
+APP_INSTANCE CreateAppInstance_posix(char *instance_name)
 {
     sem_t *testSem;
+
+    /* Try to create an instance */
     testSem = sem_open(instance_name, O_CREAT | O_EXCL);
 
     /* Check to see if there is another instance of the program running */
@@ -104,7 +109,7 @@ APP_INSTANCE CreateSingleAppInstance_posix(char *instance_name)
     return testSem;
 }
 
-void DestroySingleAppInstance_posix(UNICHAR *instance_name, APP_INSTANCE instance)
+void DestroyAppInstance_posix(UNICHAR *instance_name, APP_INSTANCE instance)
 {
     sem_unlink(instance_name);
     sem_close(instance);

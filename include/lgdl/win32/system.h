@@ -41,15 +41,15 @@ int GetSystemOsName_win32(UNICHAR *osName)
     HKEY hKey;
     LONG res = ERROR_SUCCESS;
 
-    if (RegOpenKeyExW(HKEY_CURRENT_USER, L"SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+    if (RegOpenKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
     {
-        res = RegQueryValueExW(hKey, L"ProductName", NULL, &dwType, (LPBYTE)osName, &dwSize);
+        res = RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)osName, &dwSize);
         RegCloseKey(hKey);
     }
 
     /* If no name is found in the registry, then just use Windows */
     if ((res != ERROR_SUCCESS) || (wcslen(&osName) == 0))
-        wcscpy(osName, L"Windows NT");
+        stringcopy(osName, _T("Windows NT"));
 
     return OSNAME_WINDOWS;
 }
@@ -74,7 +74,7 @@ int IsMinimumOS_win32(void)
 
     GetVersionEx(&osInfo);
 
-    /* Check to make sure that the program is running in Windows XP or later */
+    /* Check to make sure that the program is running in Windows XP (5.1) or later */
     if ((osInfo.dwMajorVersion < 5) ||
        ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
         return 0;
@@ -82,7 +82,7 @@ int IsMinimumOS_win32(void)
     return 1;
 }
 
-APP_INSTANCE CreateSingleAppInstance_win32(char *instance_name)
+APP_INSTANCE CreateAppInstance_win32(char *instance_name)
 {
     HANDLE checkInstance = NULL;
     
@@ -96,7 +96,7 @@ APP_INSTANCE CreateSingleAppInstance_win32(char *instance_name)
     return checkInstance;
 }
 
-void DestroySingleAppInstance_win32(APP_INSTANCE instance)
+void DestroyAppInstance_win32(APP_INSTANCE instance)
 {
     CloseHandle(instance);
 }

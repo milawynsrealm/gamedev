@@ -31,9 +31,9 @@
 extern "C" {
 #endif
 
-#ifdef(_WIN32)
+#ifdef UNICODE
 typedef wchar_t UNICHAR;
-typedef HANDLE APP_INSTANCE;
+#define _T(x) L##x
 
 #define fileopen _wfopen
 #define stringlength wcslen
@@ -44,12 +44,9 @@ typedef HANDLE APP_INSTANCE;
 #define findstring wcschr
 #define stringspan wcscspn
 #define currenttime _wasctime
-
-#define _T(x) L##x
-#else
+#else /* ANSI */
 typedef char UNICHAR;
-typedef unsigned __int64 DWORDLONG;
-typedef sem_t* APP_INSTANCE;
+#define _T(x) x
 
 #define fileopen fopen
 #define stringlength strlen
@@ -60,8 +57,13 @@ typedef sem_t* APP_INSTANCE;
 #define findstring strchr
 #define stringspan strcspn
 #define currenttime asctime
+#endif /* UNICODE */
 
-#define _T(x) x
+#ifdef(_WIN32)
+typedef HANDLE APP_INSTANCE;
+#else
+typedef unsigned __int64 DWORDLONG;
+typedef sem_t* APP_INSTANCE;
 #endif /* _WIN32 */
 
 /* Used to identify the OS type */

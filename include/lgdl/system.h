@@ -109,7 +109,7 @@ int GetSystemArchitecture(void)
 int GetSystemUserName(UNICHAR *userName)
 {
 #if defined(_WIN32)
-    return GetUserNameW(&userName, UNLEN+1);
+    return GetUserName(&userName, UNLEN+1);
 #else
     return ((getlogin_r(&userName, LOGIN_NAME_MAX) == 0) ? 0 : 1);
 #endif /* _WIN32 */
@@ -119,7 +119,7 @@ int GetSystemUserName(UNICHAR *userName)
 int GetSystemComputerName(UNICHAR *compName)
 {
 #if defined(_WIN32)
-    return GetComputerNameW(&compName, 32767);
+    return GetComputerName(&compName, 32767);
 #else
     return ((gethostname(&compName, HOST_NAME_MAX)) == 0 ? 0 : 1);
 #endif /* _WIN32 */
@@ -146,20 +146,20 @@ int IsMinimumOS(void)
 #endif /* _WIN32 */
 }
 
-APP_INSTANCE CreateSingleAppInstance(char *instance_name)
+APP_INSTANCE CreateAppInstance(char *instance_name)
 {
     /* A name is needed to be successful */
     if (instance_name == NULL)
         return 1;
 
 #if defined(_WIN32)
-    return CreateSingleAppInstance_win32(char *instance_name);
+    return CreateAppInstance_win32(char *instance_name);
 #else
-    return CreateSingleAppInstance_posix(char *instance_name);
+    return CreateAppInstance_posix(char *instance_name);
 #endif /* _WIN32 */
 }
 
-int DestroySingleAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
+int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
 {
     /* Make sure there's an instance name to work with since 
        POSIX-based systems need it for reference */
@@ -167,9 +167,9 @@ int DestroySingleAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
         return 1;
 
 #if defined(_WIN32)
-    return DestroySingleAppInstance_win32(instance);
+    return DestroyAppInstance_win32(instance);
 #else
-    return DestroySingleAppInstance_posix(&instance_name, instance);
+    return DestroyAppInstance_posix(&instance_name, instance);
 #endif /* _WIN32 */
 }
 

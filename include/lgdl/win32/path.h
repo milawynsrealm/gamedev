@@ -42,22 +42,22 @@ extern "C" {
 
 int GetPathHomeDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 {
-    int retValue = (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL, NULL, 0, &path)) ? 0 : 1);
+    int retValue = (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, &path)) ? 0 : 1);
 
     if (retValue == 0)
-        wcscat(&path, folderName);
+        stringcat(&path, folderName);
 
     return retValue;
 }
 
 int GetPathAppDirectory_win32(UNICHAR *path)
 {
-    return ((GetModuleFileNameW(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
+    return ((GetModuleFileName(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
 }
 
 int GetPathTempDirectory_win32(UNICHAR *path)
 {
-    return ((GetTempPathW(MAX_PATH, &path) == 0) ? 1 : 0);
+    return ((GetTempPath(MAX_PATH, &path) == 0) ? 1 : 0);
 }
 
 #ifdef __cplusplus
