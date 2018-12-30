@@ -32,9 +32,11 @@
 #error Please use path.h instead.
 #endif /* PATH_H */
 
+#ifdef(_WIN32)
 #include <windef.h>
 #include <winbase.h>
 #include <shlobj.h>
+#endif /* _WIN32 */
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,12 +44,12 @@ extern "C" {
 
 int GetPathHomeDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 {
-    int retValue = (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_PERSONAL, NULL, 0, &path)) ? 0 : 1);
+    if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, &path)) == 0)
+        stringcopy(&path, folderName);
+    else
+        return 1;
 
-    if (retValue == 0)
-        stringcat(&path, folderName);
-
-    return retValue;
+    return 0;
 }
 
 int GetPathAppDirectory_win32(UNICHAR *path)

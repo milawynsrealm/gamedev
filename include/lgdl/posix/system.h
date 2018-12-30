@@ -95,7 +95,7 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     return (DWORDLONG)mb;
 }
 
-APP_INSTANCE CreateAppInstance_posix(char *instance_name)
+APP_INSTANCE CreateAppInstance_posix(UNICHAR *instance_name)
 {
     sem_t *testSem;
 

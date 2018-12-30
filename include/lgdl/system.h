@@ -146,29 +146,29 @@ int IsMinimumOS(void)
 #endif /* _WIN32 */
 }
 
-APP_INSTANCE CreateAppInstance(char *instance_name)
+APP_INSTANCE CreateAppInstance(UNICHAR *instance_name)
 {
     /* A name is needed to be successful */
     if (instance_name == NULL)
         return 1;
 
 #if defined(_WIN32)
-    return CreateAppInstance_win32(char *instance_name);
+    return CreateAppInstance_win32(UNICHAR *instance_name);
 #else
-    return CreateAppInstance_posix(char *instance_name);
+    return CreateAppInstance_posix(UNICHAR *instance_name);
 #endif /* _WIN32 */
 }
 
 int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
 {
+#if defined(_WIN32)
+    return DestroyAppInstance_win32(instance);
+#else
     /* Make sure there's an instance name to work with since 
        POSIX-based systems need it for reference */
     if (instance_name == NULL)
         return 1;
 
-#if defined(_WIN32)
-    return DestroyAppInstance_win32(instance);
-#else
     return DestroyAppInstance_posix(&instance_name, instance);
 #endif /* _WIN32 */
 }

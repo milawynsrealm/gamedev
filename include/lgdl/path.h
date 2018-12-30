@@ -32,12 +32,8 @@
 
 #ifdef(_WIN32)
 #include "win32/path.h"
-
-#define FileOpen _wfopen
 #else
 #include "posix/path.h"
-
-#define FileOpen fopen
 #endif /* _WIN32 */
 
 #ifdef __cplusplus

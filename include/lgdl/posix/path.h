@@ -25,7 +25,7 @@
 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #ifndef PATH_POSIX_H
-#ifndef PATH_POSIX_H
+#define PATH_POSIX_H
 #ifndef(_WIN32)
 
 #ifndef PATH_H
@@ -42,26 +42,32 @@ extern "C" {
 
 int GetPathHomeDirectory_posix(UNICHAR *path, UNICHAR *folderName)
 {
-#if defined (__APPLE__) && defined(__MACH__)
-    strcpy(&path, getenv("HOME"));
-    strcat(&path, "Library/Application Support/");
-    strcat(&path, folderName);
+#if defined (__APPLE__) && defined(__MACH__) /* macOS */
+    stringcopy(&path, getenv("HOME"));
+    stringcat(&path, "Library/Application Support/");
+    stringcat(&path, folderName);
 #else
-    strcpy(&path, getenv("XDG_DATA_HOME"));
+    stringcopy(&path, getenv("XDG_CONFIG_HOME"));
 
-    if (strlen(&path) == 0)
-        strcpy(&path, getenv("HOME"));
+    /* If XDG_CONFIG_HOME is not available, 
+       then use HOME as the backup solution */
+    if (stringlength(&path) == 0)
+    {
+        /* /home/<user>/.config/ */
+        if (stringcopy(&path, getenv("HOME")) == NULL)
+            return 1;
+
+        stringcat(&path, ".config/");
+    }
 
     /* Add the folder name */
-    if ((strlen(&path) != 0) && (folderName != NULL))
-    {
-        strcat(&path, ".");
-        strcat(&path, folderName);
-    }
+    if ((stringlength(&path) != 0) && (folderName != NULL))
+        stringcat(&path, folderName);
+
 #endif /* __APPLE__ */
 
     /* If the length of the string is nothing, assume failure */
-    return strlen(&path) == 0 ? 1 : 0;
+    return stringlength(&path) == 0 ? 1 : 0;
 }
 
 int GetPathAppDirectory_posix(UNICHAR *path)
@@ -72,8 +78,8 @@ int GetPathAppDirectory_posix(UNICHAR *path)
 
 int GetPathTempDirectory_posix(UNICHAR *path)
 {
-    strcpy(&path, "/tmp");
-    return 0;
+    /* Returns the location of the temp directory */
+    return ((stringcopy(&path, "/tmp") == NULL) ? 1 : 0);
 }
 
 #ifdef __cplusplus

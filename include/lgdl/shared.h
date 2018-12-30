@@ -31,10 +31,14 @@
 extern "C" {
 #endif
 
+#if !defined(_WIN32) && defined(UNICODE)
+#warning ("POSIX-based systems doesn't have any support for UNICODE. Setting to ANSI output.")
+#undef UNICODE
+#endif
+
 #ifdef UNICODE
 typedef wchar_t UNICHAR;
 #define _T(x) L##x
-
 #define fileopen _wfopen
 #define stringlength wcslen
 #define stringcopy wcscpy
@@ -44,10 +48,10 @@ typedef wchar_t UNICHAR;
 #define findstring wcschr
 #define stringspan wcscspn
 #define currenttime _wasctime
+
 #else /* ANSI */
 typedef char UNICHAR;
 #define _T(x) x
-
 #define fileopen fopen
 #define stringlength strlen
 #define stringcopy strcpy

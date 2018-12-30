@@ -75,19 +75,19 @@ int IsMinimumOS_win32(void)
     GetVersionEx(&osInfo);
 
     /* Check to make sure that the program is running in Windows XP (5.1) or later */
-    if ((osInfo.dwMajorVersion < 5) ||
+    if ((osInfo.dwMajorVersion > 6) ||
        ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
         return 0;
 
     return 1;
 }
 
-APP_INSTANCE CreateAppInstance_win32(char *instance_name)
+APP_INSTANCE CreateAppInstance_win32(UNICHAR *instance_name)
 {
     HANDLE checkInstance = NULL;
     
     /* The instance name is internal, there's no need for a UNICODE string here */
-    checkInstance = CreateMutexA(NULL, FALSE, instance_name);
+    checkInstance = CreateMutex(NULL, FALSE, instance_name);
 
     /* If there is already an instance of the program, then return null */
     if ((GetLastError() == ERROR_ALREADY_EXISTS) || (GetLastError() == ERROR_ACCESS_DENIED))
