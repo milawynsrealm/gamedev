@@ -9,7 +9,15 @@ This library is currently designed to be able to run comfortably in Windows XP o
 
 ## Building
 
-Compiling this library should be easy since all you have to do is just drop the headers into your project and compile. However, if you want to compile in Windows under GCC, then [Mingw-w64](https://mingw-w64.org/) is recommended as it provides better support than [MinGW](https://osdn.net/projects/mingw/).
+Compiling this library should be easy since all you have to do is just drop the headers into your project and compile. However, if you want to compile in Windows under GCC, then [Mingw-w64](https://mingw-w64.org/) is recommended as it provides better support than [MinGW](https://osdn.net/projects/mingw/). 
+
+## Windows Dependencies
+
+The dependencies for the Windows platform should be minimal and should work with most modern compilers.
+
+* shell32
+* advapi32
+* kernel32
 
 ## License
 
