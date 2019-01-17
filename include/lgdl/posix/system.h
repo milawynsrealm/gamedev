@@ -49,7 +49,16 @@ int GetSystemOsName_posix(UNICHAR *osName)
         stringcat(osName, unameData.release);
     }
     else
+    {
+#if defined(__linux__) || defined(__gnu_linux__)
         stringcopy(osName, _T("GNU/Linux"));
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
+    defined(__NetBSD__) || defined(__bsdi__)
+        stringcopy(osName, _T("BSD"));
+#elif defined(__APPLE__) && defined(__MACH__)
+        stringcopy(osName, _T("macOS"));
+#endif
+    }
 
 #if defined(__linux__) || defined(__gnu_linux__)
     return OSNAME_LINUX;
@@ -58,9 +67,8 @@ int GetSystemOsName_posix(UNICHAR *osName)
     return OSNAME_BSD;
 #elif defined(__APPLE__) && defined(__MACH__)
     return OSNAME_MACOS;
-#else
-    return OSNAME_NONE;
 #endif
+    return OSNAME_NONE;
 }
 
 int GetSystemAppName_posix(char *appName)
