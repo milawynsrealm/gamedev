@@ -45,6 +45,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#define MINOS_XP    0
+#define MINOS_VISTA 1
+#define MINOS_7     2
+#define MINOS_8     3
+
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
@@ -132,11 +137,12 @@ DWORDLONG GetSystemTotalMemory(void)
 #endif /* _WIN32 */
 }
 
-/* Make sure the system is a certain version or later */
-int IsMinimumOS(void)
+/* Make sure the system is a certain version or later. 
+   For now, this only works with Windows. */
+int IsMinimumOS(int version)
 {
 #if defined(_WIN32)
-    return IsMinimumOS_win32();
+    return IsMinimumOS_win32(version);
 #else
     return 0;
 #endif /* _WIN32 */

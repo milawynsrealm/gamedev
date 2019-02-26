@@ -65,7 +65,7 @@ DWORDLONG GetSystemTotalMemory_win32(void)
     return totalMem.ullTotalPhys / 1024;
 }
 
-int IsMinimumOS_win32(void)
+int IsMinimumOS_win32(int version)
 {
     OSVERSIONINFOEX osInfo;
 
@@ -74,10 +74,32 @@ int IsMinimumOS_win32(void)
 
     GetVersionEx(&osInfo);
 
-    /* Check to make sure that the program is running in Windows XP (5.1) or later */
-    if ((osInfo.dwMajorVersion > 6) ||
-       ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
-        return 0;
+    switch (version)
+    {
+        case MINOS_XP:
+        {
+            /* Check to make sure that the program is running in Windows XP (5.1) or later */
+            if ((osInfo.dwMajorVersion > 6) ||
+               ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
+                return 0;
+        }
+        case MINOS_VISTA:
+        {
+            /* Check to make sure that the program is running in Windows Vista (5.1) or later */
+            if (osInfo.dwMajorVersion > 6)
+                return 0;
+        }
+        case MINOS_7:
+        {
+            if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 1))
+                return 0;
+        }
+        case MINOS_8:
+        {
+            if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 2))
+                return 0;
+        }
+    }
 
     return 1;
 }
