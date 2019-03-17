@@ -89,6 +89,22 @@ typedef sem_t* APP_INSTANCE;
 #define ARCH_ALPHA   4
 #define ARCH_PPC     5
 
+/* Used to make reading source code used to determine the 
+   OS type when compiling easy */
+#if defined(__linux__) || defined(__gnu_linux__)
+#define OSTYPE_LINUX
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
+      defined(__NetBSD__) || defined(__bsdi__) || \
+      defined(__DragonFly__)
+#define OSTYPE_BSD
+#elif defined(__APPLE__) && defined(__MACH__)
+#define OSTYPE_OSX
+#elif defined(OS2) || defined(_OS2)
+#define OSTYPE_OS2
+#else
+#error Compile level of OS detection is not defined!
+#endif
+
 #ifdef __cplusplus
 }
 #endif

@@ -26,6 +26,7 @@
 */
 #ifndef PATH_POSIX_H
 #define PATH_POSIX_H
+
 #ifndef(_WIN32)
 
 #ifndef PATH_H
@@ -42,7 +43,7 @@ extern "C" {
 
 int GetPathHomeDirectory_posix(UNICHAR *path, UNICHAR *folderName)
 {
-#if defined (__APPLE__) && defined(__MACH__) /* macOS */
+#if defined (OSTYPE_OSX) /* macOS */
     stringcopy(&path, getenv("HOME"));
     stringcat(&path, "Library/Application Support/");
     stringcat(&path, folderName);
@@ -64,7 +65,7 @@ int GetPathHomeDirectory_posix(UNICHAR *path, UNICHAR *folderName)
     if ((stringlength(&path) != 0) && (folderName != NULL))
         stringcat(&path, folderName);
 
-#endif /* __APPLE__ */
+#endif /* OSTYPE_OSX */
 
     /* If the length of the string is nothing, assume failure */
     return stringlength(&path) == 0 ? 1 : 0;

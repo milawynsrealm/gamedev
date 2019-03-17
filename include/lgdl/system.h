@@ -55,11 +55,9 @@ int GetSystemOsName(UNICHAR *osName)
 {
 #if defined(_WIN32)
     return GetSystemOsName_win32(&osName);
-#elif defined(__linux__) || defined(__gnu_linux__) || \
-      defined(__FreeBSD__) || defined(__OpenBSD__) || \
-          defined(__NetBSD__) || defined(__bsdi__) || \
-          defined(__DragonFly__) || \
-      defined(__APPLE__) && defined(__MACH__)
+#elif defined(OSTYPE_LINUX) || \
+      defined(OSTYPE_BSD) || \
+      defined(OSTYPE_OSX)
     return GetSystemOsName_posix(&osName);
 #elif defined(__ANDROID__)
     strcpy(osName, "Android");
@@ -67,7 +65,7 @@ int GetSystemOsName(UNICHAR *osName)
 #elif defined(__BEOS__)
     strcpy(osName, "BeOS");
     return OSNAME_BEOS;
-#elif defined(OS2) || defined(_OS2)
+#elif defined(OSTYPE_OS2)
     strcpy(osName, "OS/2");
     return OSNAME_OS2;
 #else
