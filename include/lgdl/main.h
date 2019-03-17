@@ -50,7 +50,7 @@ extern "C" {
 #ifdef USE_CONSOLE_APP
 extern int ConsoleMain(int argc, UNICHAR *argv[]);
 #else
-extern int ProgramMain(int argc, UNICHAR *argv[]);
+extern int GuiMain(int argc, UNICHAR *argv[]);
 #endif /* USE_CONSOLE_APP */
 
 #ifdef(_WIN32)
@@ -69,7 +69,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     /* Converts the command line into a usable format */
     argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-    return ProgramMain(argc, argv[]);
+    return GuiMain(argc, argv[]);
 }
 #endif /* USE_CONSOLE_APP */
 #else /* ANSI */
@@ -81,7 +81,7 @@ int main(int argc, UNICHAR *argv[])
 #else
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
 {
-    return ProgramMain(__argc, __argv);
+    return GuiMain(__argc, __argv);
 }
 #endif /* USE_CONSOLE_APP */
 #endif /* UNICODE */
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 #ifdef USE_CONSOLE_APP
     return ConsoleMain(argc, argv);
 #else
-    return ProgramMain(argc, argv);
+    return GuiMain(argc, argv);
 #endif /* USE_CONSOLE_APP */
 }
 #endif /* _WIN32 */
