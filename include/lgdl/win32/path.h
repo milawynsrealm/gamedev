@@ -45,7 +45,10 @@ extern "C" {
 int GetPathHomeDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 {
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, &path)) == 0)
+    {
+        /* Appends the name of the folder to the final path */
         stringcopy(&path, folderName);
+    }
     else
         return 1;
 
@@ -54,11 +57,13 @@ int GetPathHomeDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 
 int GetPathAppDirectory_win32(UNICHAR *path)
 {
+    /* Returns the path where the program itself is located in */
     return ((GetModuleFileName(NULL, &path, MAX_PATH) == ERROR_SUCCESS) ? 0 : 1);
 }
 
 int GetPathTempDirectory_win32(UNICHAR *path)
 {
+    /* Grabs the path where the temporary files are */
     return ((GetTempPath(MAX_PATH, &path) == 0) ? 1 : 0);
 }
 

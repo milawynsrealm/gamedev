@@ -41,6 +41,7 @@ int GetSystemOsName_win32(UNICHAR *osName)
     HKEY hKey;
     LONG res = ERROR_SUCCESS;
 
+    /* Opens the registry key for getting the name of the operating system */
     if (RegOpenKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
     {
         res = RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)osName, &dwSize);
@@ -51,6 +52,7 @@ int GetSystemOsName_win32(UNICHAR *osName)
     if ((res != ERROR_SUCCESS) || (wcslen(&osName) == 0))
         stringcopy(osName, _T("Windows NT"));
 
+    /* Lets the program know it's Windows */
     return OSNAME_WINDOWS;
 }
 
@@ -58,6 +60,7 @@ DWORDLONG GetSystemTotalMemory_win32(void)
 {
     MEMORYSTATUSEX totalMem;
 
+    /* Grabs the total amount of memory available on the system */
     totalMem.dwLength = sizeof(totalMem);
     GlobalMemoryStatusEx(&totalMem);
 
@@ -72,35 +75,35 @@ int IsMinimumOS_win32(int version)
     ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
     osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
+    /* Get the version of Windows */
     GetVersionEx(&osInfo);
 
     switch (version)
     {
-        case MINOS_XP:
+        case MINOS_XP: /* Windows XP/2K3 or later */
         {
-            /* Check to make sure that the program is running in Windows XP (5.1) or later */
             if ((osInfo.dwMajorVersion > 6) ||
                ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
                 return 0;
         }
-        case MINOS_VISTA:
+        case MINOS_VISTA: /* Windows Vista/2008 or later */
         {
-            /* Check to make sure that the program is running in Windows Vista (5.1) or later */
             if (osInfo.dwMajorVersion > 6)
                 return 0;
         }
-        case MINOS_7:
+        case MINOS_7: /* Windows 7/2008 R2 or later */
         {
             if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 1))
                 return 0;
         }
-        case MINOS_8:
+        case MINOS_8: /* Windows 8/2012 or later */
         {
             if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 2))
                 return 0;
         }
     }
 
+    /* If it gets here, assume the user is using the wrong version of Windows */
     return 1;
 }
 
@@ -120,6 +123,7 @@ APP_INSTANCE CreateAppInstance_win32(UNICHAR *instance_name)
 
 void DestroyAppInstance_win32(APP_INSTANCE instance)
 {
+    /* Close the handle to the application instance */
     CloseHandle(instance);
 }
 
