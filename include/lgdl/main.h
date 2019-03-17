@@ -47,10 +47,20 @@ extern "C" {
 #include "shared.h"
 
 /* Reference to the main entry point of the application. Must be manually defined by the developer. */
+#ifdef USE_CONSOLE_APP
+extern int ConsoleMain(int argc, UNICHAR *argv[]);
+#else
 extern int ProgramMain(int argc, UNICHAR *argv[]);
+#endif /* USE_CONSOLE_APP */
 
 #ifdef(_WIN32)
 #ifdef UNICODE
+#ifdef USE_CONSOLE_APP
+int wmain(int argc, UNICHAR *argv[])
+{
+    return ConsoleMain(argc, argv);
+}
+#else
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
     int argc;
@@ -61,16 +71,29 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
     return ProgramMain(argc, argv[]);
 }
+#endif /* USE_CONSOLE_APP */
+#else /* ANSI */
+#ifdef USE_CONSOLE_APP
+int main(int argc, UNICHAR *argv[])
+{
+    return ConsoleMain(argc, argv);
+}
 #else
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR pCmdLine, int nCmdShow)
 {
     return ProgramMain(__argc, __argv);
 }
+#endif /* USE_CONSOLE_APP */
 #endif /* UNICODE */
-#else /* POSIX-based systems (Linux, BSD, macOS, etc.) */
+#else /* POSIX-based systems (Linux, BSD, macOS, etc.). It all uses the same entry point
+         regardless of whether it's GUI or CUI. */
 int main(int argc, char *argv[])
 {
+#ifdef USE_CONSOLE_APP
+    return ConsoleMain(argc, argv);
+#else
     return ProgramMain(argc, argv);
+#endif /* USE_CONSOLE_APP */
 }
 #endif /* _WIN32 */
 
