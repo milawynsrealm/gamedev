@@ -31,6 +31,7 @@
 extern "C" {
 #endif
 
+#include <stdio.h>
 #include "shared.h"
 
 #define DEBUG_NORMAL 0
@@ -67,9 +68,9 @@ int DebugPrintHeader(FILE *file, UNICHAR *appname)
     fileputs(_T("<html>"), file);
 
     /* Header Title with CSS formatting */
-    stringcopy(headTitle, _T("<head>"))
-    stringcat(headTitle, _T("<meta charset=""UTF-8"">"))
-    stringcat(headTitle, _T("<title>"))
+    stringcopy(headTitle, _T("<head>"));
+    stringcat(headTitle, _T("<meta charset=""UTF-8"">"));
+    stringcat(headTitle, _T("<title>"));
     stringcat(headTitle, appname);
     stringcat(headTitle, _T(" - Debug Log</title>"));
     stringcat(headTitle, _T("<style>"));
@@ -77,10 +78,10 @@ int DebugPrintHeader(FILE *file, UNICHAR *appname)
     stringcat(headTitle, _T("    background-color:rgb(255,255,255)"));
     stringcat(headTitle, _T("}"));
     stringcat(headTitle, _T("</style></head>"));
-    fileputs(&headTitle, file);
+    fileputs(headTitle, file);
 
     /* Body Start */
-    fileputs(_T("<body>"), file)
+    fileputs(_T("<body>"), file);
 
     /* Body Title */
     stringcopy(bodyTitle, _T("<h1>"));
@@ -113,8 +114,8 @@ int DebugPrintHeader(FILE *file, UNICHAR *appname)
 
 int DebugPrintMessage(FILE *file, UNICHAR *message, int debugLevel)
 {
-    UNICHAR *messageBody;
-    UNICHAR *textColor;
+    UNICHAR *messageBody = NULL;
+    UNICHAR *textColor = NULL;
 
     /* There has to be a file and a message to work with */
     if ((file == NULL) || (message == NULL))

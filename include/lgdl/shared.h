@@ -39,6 +39,7 @@ extern "C" {
 #ifdef UNICODE
 typedef wchar_t UNICHAR;
 #define _T(x) L##x
+#define fileputs fputws
 #define fileopen _wfopen
 #define stringlength wcslen
 #define stringcopy wcscpy
@@ -52,6 +53,7 @@ typedef wchar_t UNICHAR;
 #else /* ANSI */
 typedef char UNICHAR;
 #define _T(x) x
+#define fileputs fputs
 #define fileopen fopen
 #define stringlength strlen
 #define stringcopy strcpy
@@ -63,7 +65,7 @@ typedef char UNICHAR;
 #define currenttime asctime
 #endif /* UNICODE */
 
-#ifdef(_WIN32)
+#ifdef _WIN32
 typedef HANDLE APP_INSTANCE;
 #else
 typedef unsigned __int64 DWORDLONG;
@@ -89,20 +91,28 @@ typedef sem_t* APP_INSTANCE;
 #define ARCH_ALPHA   4
 #define ARCH_PPC     5
 
-/* Used to make reading source code used to determine the 
+/* Used to derermine the minimum version of Windows */
+#define MINOS_XP    0
+#define MINOS_VISTA 1
+#define MINOS_7     2
+#define MINOS_8     3
+
+/* Used to make reading source code used to determine the
    OS type when compiling easy */
 #if defined(__linux__) || defined(__gnu_linux__)
-#define OSTYPE_LINUX
+#define CURRENT_OS OSTYPE_LINUX
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
       defined(__NetBSD__) || defined(__bsdi__) || \
       defined(__DragonFly__)
-#define OSTYPE_BSD
+#define CURRENT_OS OSTYPE_BSD
 #elif defined(__APPLE__) && defined(__MACH__)
-#define OSTYPE_OSX
+#define CURRENT_OS OSTYPE_OSX
 #elif defined(OS2) || defined(_OS2)
-#define OSTYPE_OS2
+#define CURRENT_OS OSTYPE_OS2
+#elif defined(_WIN32)
+#define CURRENT_OS OSNAME_WINDOWS
 #else
-#error Compile level of OS detection is not defined!
+#define CURRENT_OS OSNAME_NONE
 #endif
 
 #ifdef __cplusplus

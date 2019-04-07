@@ -26,7 +26,7 @@
 */
 #ifndef SYSTEM_WIN32_H
 #define SYSTEM_WIN32_H
-#ifdef(_WIN32)
+#ifdef _WIN32
 
 #ifndef SYSTEM_H
 #error Please use system.h instead.
@@ -40,16 +40,19 @@ int GetSystemOsName_win32(UNICHAR *osName)
 {
     HKEY hKey;
     LONG res = ERROR_SUCCESS;
+    DWORD dwSize;
+
+    dwSize = sizeof(int);
 
     /* Opens the registry key for getting the name of the operating system */
     if (RegOpenKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
     {
-        res = RegQueryValueEx(hKey, _T("ProductName"), NULL, &dwType, (LPBYTE)osName, &dwSize);
+        res = RegQueryValueEx(hKey, _T("ProductName"), NULL, NULL, (LPBYTE)osName, &dwSize);
         RegCloseKey(hKey);
     }
 
     /* If no name is found in the registry, then just use Windows */
-    if ((res != ERROR_SUCCESS) || (wcslen(&osName) == 0))
+    if ((res != ERROR_SUCCESS) || (wcslen(osName) == 0))
         stringcopy(osName, _T("Windows NT"));
 
     /* Lets the program know it's Windows */
@@ -70,7 +73,7 @@ DWORDLONG GetSystemTotalMemory_win32(void)
 
 int IsMinimumOS_win32(int version)
 {
-    OSVERSIONINFOEX osInfo;
+    OSVERSIONINFO osInfo;
 
     ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
     osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);

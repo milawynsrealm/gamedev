@@ -39,9 +39,12 @@
 extern "C" {
 #endif
 
-#ifdef(_WIN32)
+#ifdef _WIN32
 #include <windef.h>
+#include <winbase.h>
 #include <shellapi.h>
+
+#include <stdlib.h>
 #endif /* _WIN32 */
 
 #include "shared.h"
@@ -53,15 +56,21 @@ extern int ConsoleMain(int argc, UNICHAR *argv[]);
 extern int GuiMain(int argc, UNICHAR *argv[]);
 #endif /* USE_CONSOLE_APP */
 
-#ifdef(_WIN32)
+#ifdef _WIN32
 #ifdef UNICODE
 #ifdef USE_CONSOLE_APP
 int wmain(int argc, UNICHAR *argv[])
 {
-    return ConsoleMain(argc, argv);
+    int w_argc;
+    WCHAR** w_argv;
+
+    /* Converts the command line into a usable format */
+    w_argv = CommandLineToArgvW(GetCommandLineW(), &w_argc);
+
+    return ConsoleMain(w_argc, w_argv);
 }
 #else
-int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
+int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
 {
     int argc;
     WCHAR** argv;
@@ -69,7 +78,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
     /* Converts the command line into a usable format */
     argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 
-    return GuiMain(argc, argv[]);
+    return GuiMain(argc, argv);
 }
 #endif /* USE_CONSOLE_APP */
 #else /* ANSI */

@@ -29,10 +29,11 @@
 
 #include "shared.h"
 
-#ifdef(_WIN32)
+#if defined(_WIN32)
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
+#include <winuser.h>
 #include "win32/system.h"
 #else
 #include <unistd.h>
@@ -45,14 +46,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
-#define MINOS_XP    0
-#define MINOS_VISTA 1
-#define MINOS_7     2
-#define MINOS_8     3
-
 #if defined(_WIN32)
 typedef HWND LgdlWndHandle;
-#elif defined(OSTYPE_LINUX) || defined(OSTYPE_BSD)
+#elif defined(CURRENT_OS = OSTYPE_LINUX) || defined(CURRENT_OS = OSTYPE_BSD)
 typedef Window LgdlWndHandle;
 #else /* OSTYPE_OSX or misc. */
 typedef void* LgdlWndHandle;
@@ -69,12 +65,12 @@ int FlashSystemWindow(LgdlWndHandle wndHandle)
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
-#if defined(_WIN32)
-    return GetSystemOsName_win32(&osName);
+#if defined _WIN32 
+    return GetSystemOsName_win32(osName);
 #elif defined(OSTYPE_LINUX) || \
       defined(OSTYPE_BSD) || \
       defined(OSTYPE_OSX)
-    return GetSystemOsName_posix(&osName);
+    return GetSystemOsName_posix(osName);
 #elif defined(__ANDROID__)
     strcpy(osName, "Android");
     return OSNAME_ANDROID;
@@ -93,7 +89,7 @@ int GetSystemOsName(UNICHAR *osName)
 int GetSystemAppName(UNICHAR *appName)
 {
 #if defined(_WIN32)
-    return ((GetModuleFileName(NULL, &appName, MAX_PATH) == 0) ? 1 : 0);
+    return ((GetModuleFileName(NULL, appName, MAX_PATH) == 0) ? 1 : 0);
 #else
     return GetSystemAppName_posix(&appName);
 #endif
@@ -124,9 +120,11 @@ int GetSystemArchitecture(void)
 int GetSystemUserName(UNICHAR *userName)
 {
 #if defined(_WIN32)
-    return GetUserName(&userName, UNLEN+1);
+    DWORD uNameSize = 256;
+
+    return GetUserName(userName, &uNameSize+1);
 #else
-    return ((getlogin_r(&userName, LOGIN_NAME_MAX) == 0) ? 0 : 1);
+    return ((getlogin_r(userName, LOGIN_NAME_MAX) == 0) ? 0 : 1);
 #endif /* _WIN32 */
 }
 
@@ -134,10 +132,13 @@ int GetSystemUserName(UNICHAR *userName)
 int GetSystemComputerName(UNICHAR *compName)
 {
 #if defined(_WIN32)
-    return GetComputerName(&compName, 32767);
+    DWORD compNameSize = 32767;
+
+    return GetComputerName(compName, &compNameSize);
 #else
-    return ((gethostname(&compName, HOST_NAME_MAX)) == 0 ? 0 : 1);
+    return ((gethostname(compName, HOST_NAME_MAX)) == 0 ? 0 : 1);
 #endif /* _WIN32 */
+    return 0;
 }
 
 /* Determines how much system memory is 
@@ -149,6 +150,7 @@ DWORDLONG GetSystemTotalMemory(void)
 #else
     return GetSystemTotalMemory_posix();
 #endif /* _WIN32 */
+    return 0;
 }
 
 /* Make sure the system is a certain version or later. 
@@ -157,36 +159,41 @@ int IsMinimumOS(int version)
 {
 #if defined(_WIN32)
     return IsMinimumOS_win32(version);
-#else
+#endif
     return 0;
-#endif /* _WIN32 */
 }
 
 APP_INSTANCE CreateAppInstance(UNICHAR *instance_name)
 {
     /* A name is needed to be successful */
     if (instance_name == NULL)
-        return 1;
+        return NULL;
 
 #if defined(_WIN32)
-    return CreateAppInstance_win32(UNICHAR *instance_name);
+    return CreateAppInstance_win32(instance_name);
 #else
-    return CreateAppInstance_posix(UNICHAR *instance_name);
+    return CreateAppInstance_posix(instance_name);
 #endif /* _WIN32 */
+    return 0;
 }
 
 int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
 {
+    /* Make sure there's something to work with */
+    if (instance == NULL)
+        return 1;
+
 #if defined(_WIN32)
-    return DestroyAppInstance_win32(instance);
+    DestroyAppInstance_win32(instance);
 #else
     /* Make sure there's an instance name to work with since 
        POSIX-based systems need it for reference */
     if (instance_name == NULL)
         return 1;
 
-    return DestroyAppInstance_posix(&instance_name, instance);
+    DestroyAppInstance_posix(&instance_name, instance);
 #endif /* _WIN32 */
+    return 0;
 }
 
 #ifdef __cplusplus

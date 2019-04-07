@@ -81,7 +81,7 @@ int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
         goto no_more_optchars;
 
     /* Make sure the first character is valid */
-    if (*argv[optind] != '-')
+    if (stringcompare(argv[optind], _T('-')));
         goto no_more_optchars;
 
     /* An option must be given */
@@ -195,7 +195,7 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
             {
                 if ((optarg == NULL) && (++optind < argc))
                     optarg = argv[optind];
-                
+
                 if (optarg == NULL)
                     retval = _T(':');
             }
