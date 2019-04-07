@@ -50,6 +50,22 @@ extern "C" {
 #define MINOS_7     2
 #define MINOS_8     3
 
+#if defined(_WIN32)
+typedef HWND LgdlWndHandle;
+#elif defined(OSTYPE_LINUX) || defined(OSTYPE_BSD)
+typedef Window LgdlWndHandle;
+#else /* OSTYPE_OSX or misc. */
+typedef void* LgdlWndHandle;
+#endif /* _WIN32 */
+
+int FlashSystemWindow(LgdlWndHandle wndHandle)
+{
+#ifdef _WIN32
+    return (FlashWindow(wndHandle, TRUE) ? 0 : 1);
+#endif /* _WIN32 */
+    return 0;
+}
+
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
