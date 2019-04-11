@@ -30,7 +30,7 @@
 #include <stdio.h>
 #include "shared.h"
 
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 #include "win32/path.h"
 #else
 #include "posix/path.h"
@@ -44,7 +44,7 @@ extern "C" {
    than other operating systems. */
 UNICHAR *GetPathDirSeperator(void)
 {
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return L'\\';
 #else
     return '/';
@@ -56,7 +56,7 @@ UNICHAR *GetPathDirSeperator(void)
    files */
 int GetPathHomeDirectory(UNICHAR *path, UNICHAR *folderName)
 {
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return GetPathHomeDirectory_win32(&path, &folderName);
 #else
     return GetPathHomeDirectory_posix(&path, &folderName);
@@ -67,7 +67,7 @@ int GetPathHomeDirectory(UNICHAR *path, UNICHAR *folderName)
    directory */
 int GetPathAppDirectory(UNICHAR *path)
 {
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return GetPathAppDirectory_win32(&path);
 #else
     return GetPathAppDirectory_posix(&path);
@@ -78,7 +78,7 @@ int GetPathAppDirectory(UNICHAR *path)
    used by programs to run faster */
 int GetPathTempDirectory(UNICHAR *path)
 {
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return GetPathTempDirectory_win32(&path);
 #else
     return GetPathTempDirectory_posix(&path);

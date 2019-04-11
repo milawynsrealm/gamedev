@@ -31,16 +31,12 @@
 extern "C" {
 #endif
 
-#if !defined(_WIN32) && defined(UNICODE)
-#warning ("POSIX-based systems doesn't have any support for UNICODE. Setting to ANSI output.")
-#undef UNICODE
-#endif
-
 #ifdef UNICODE
 typedef wchar_t UNICHAR;
 #define _T(x) L##x
 #define fileputs fputws
 #define fileopen _wfopen
+#define consoleprint printf
 #define stringlength wcslen
 #define stringcopy wcscpy
 #define stringcat wcscat
@@ -55,6 +51,7 @@ typedef char UNICHAR;
 #define _T(x) x
 #define fileputs fputs
 #define fileopen fopen
+#define consoleprint wprintf
 #define stringlength strlen
 #define stringcopy strcpy
 #define stringcat strcat
@@ -92,10 +89,28 @@ typedef sem_t* APP_INSTANCE;
 #define ARCH_PPC     5
 
 /* Used to derermine the minimum version of Windows */
-#define MINOS_XP    0
-#define MINOS_VISTA 1
-#define MINOS_7     2
-#define MINOS_8     3
+#define MINOS_NONE  0
+#define MINOS_XP    1
+#define MINOS_VISTA 2
+#define MINOS_7     3
+#define MINOS_8     4
+
+/* Determines the current system architecture */
+#if defined(__i386) || defined(_M_IX86)
+#define CURRENT_ARCH ARCH_86;
+#elif defined(__amd64__) || defined(_M_X64)
+#define CURRENT_ARCH ARCH_AMD64;
+#elif defined(__ia64__) || defined(_M_IA64)
+#define CURRENT_ARCH ARCH_ITANIUM;
+#elif defined(__arm__) || defined(_M_ARM)
+#define CURRENT_ARCH ARCH_ARM;
+#elif defined(__alpha__) || defined(_M_ALPHA)
+#define CURRENT_ARCH ARCH_ALPHA;
+#elif defined(__powerpc) || defined(_M_PPC)
+#define CURRENT_ARCH ARCH_PPC;
+#else
+#define CURRENT_ARCH ARCH_NONE;
+#endif /* __i386 */
 
 /* Used to make reading source code used to determine the
    OS type when compiling easy */
@@ -111,6 +126,10 @@ typedef sem_t* APP_INSTANCE;
 #define CURRENT_OS OSTYPE_OS2
 #elif defined(_WIN32)
 #define CURRENT_OS OSNAME_WINDOWS
+#elif defined(__ANDROID__)
+#define CURRENT_OS OSNAME_ANDROID
+#elif defined(__BEOS__)
+#define CURRENT_OS OSNAME_BEOS
 #else
 #define CURRENT_OS OSNAME_NONE
 #endif

@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-#ifdef _WIN32
+#if (CURRENT_OS == OSNAME_WINDOWS)
 #include <windef.h>
 #include <winbase.h>
 #include <shellapi.h>
@@ -56,7 +56,7 @@ extern int ConsoleMain(int argc, UNICHAR *argv[]);
 extern int GuiMain(int argc, UNICHAR *argv[]);
 #endif /* USE_CONSOLE_APP */
 
-#ifdef _WIN32
+#if (CURRENT_OS == OSNAME_WINDOWS)
 #ifdef UNICODE
 #ifdef USE_CONSOLE_APP
 int wmain(int argc, UNICHAR *argv[])

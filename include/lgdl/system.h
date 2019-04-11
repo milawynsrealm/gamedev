@@ -29,7 +29,7 @@
 
 #include "shared.h"
 
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 #include <windef.h>
 #include <winbase.h>
 #include <winreg.h>
@@ -40,44 +40,44 @@
 #include <limits.h>
 #include <errno.h>
 #include "posix/system.h"
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 typedef HWND LgdlWndHandle;
-#elif defined(CURRENT_OS = OSTYPE_LINUX) || defined(CURRENT_OS = OSTYPE_BSD)
+#elif (CURRENT_OS == OSTYPE_LINUX) || (CURRENT_OS == OSTYPE_BSD)
 typedef Window LgdlWndHandle;
 #else /* OSTYPE_OSX or misc. */
 typedef void* LgdlWndHandle;
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 
 int FlashSystemWindow(LgdlWndHandle wndHandle)
 {
-#ifdef _WIN32
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return (FlashWindow(wndHandle, TRUE) ? 0 : 1);
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
     return 0;
 }
 
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
-#if defined _WIN32 
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return GetSystemOsName_win32(osName);
-#elif defined(OSTYPE_LINUX) || \
-      defined(OSTYPE_BSD) || \
-      defined(OSTYPE_OSX)
+#elif (CURRENT_OS == OSTYPE_LINUX) || \
+      (CURRENT_OS == OSTYPE_BSD) || \
+      (CURRENT_OS == OSTYPE_OSX)
     return GetSystemOsName_posix(osName);
-#elif defined(__ANDROID__)
+#elif (CURRENT_OS == OSNAME_ANDROID)
     strcpy(osName, "Android");
     return OSNAME_ANDROID;
-#elif defined(__BEOS__)
+#elif (CURRENT_OS == OSNAME_BEOS)
     strcpy(osName, "BeOS");
     return OSNAME_BEOS;
-#elif defined(OSTYPE_OS2)
+#elif defined(CURRENT_OS == OSTYPE_OS2)
     strcpy(osName, "OS/2");
     return OSNAME_OS2;
 #else
@@ -88,7 +88,7 @@ int GetSystemOsName(UNICHAR *osName)
 
 int GetSystemAppName(UNICHAR *appName)
 {
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return ((GetModuleFileName(NULL, appName, MAX_PATH) == 0) ? 1 : 0);
 #else
     return GetSystemAppName_posix(&appName);
@@ -99,27 +99,13 @@ int GetSystemAppName(UNICHAR *appName)
    program is running on */
 int GetSystemArchitecture(void)
 {
-#if defined(__i386) || defined(_M_IX86)
-    return ARCH_86;
-#elif defined(__amd64__) || defined(_M_X64)
-    return ARCH_AMD64;
-#elif defined(__ia64__) || defined(_M_IA64)
-    return ARCH_ITANIUM;
-#elif defined(__arm__) || defined(_M_ARM)
-    return ARCH_ARM;
-#elif defined(__alpha__) || defined(_M_ALPHA)
-    return ARCH_ALPHA;
-#elif defined(__powerpc) || defined(_M_PPC)
-    return ARCH_PPC;
-#else
-    return ARCH_NONE;
-#endif /* __i386 */
+    return CURRENT_ARCH;
 }
 
 /* Determines what the user's name is */
 int GetSystemUserName(UNICHAR *userName)
 {
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     DWORD uNameSize = 256;
 
     return GetUserName(userName, &uNameSize+1);
@@ -131,7 +117,7 @@ int GetSystemUserName(UNICHAR *userName)
 /* Grabs the name of the computer */
 int GetSystemComputerName(UNICHAR *compName)
 {
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     DWORD compNameSize = 32767;
 
     return GetComputerName(compName, &compNameSize);
@@ -145,7 +131,7 @@ int GetSystemComputerName(UNICHAR *compName)
    available overall */
 DWORDLONG GetSystemTotalMemory(void)
 {
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return GetSystemTotalMemory_win32();
 #else
     return GetSystemTotalMemory_posix();
@@ -157,7 +143,7 @@ DWORDLONG GetSystemTotalMemory(void)
    For now, this only works with Windows. */
 int IsMinimumOS(int version)
 {
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return IsMinimumOS_win32(version);
 #endif
     return 0;
@@ -169,12 +155,12 @@ APP_INSTANCE CreateAppInstance(UNICHAR *instance_name)
     if (instance_name == NULL)
         return NULL;
 
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     return CreateAppInstance_win32(instance_name);
 #else
     return CreateAppInstance_posix(instance_name);
 #endif /* _WIN32 */
-    return 0;
+    return NULL;
 }
 
 int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
@@ -183,7 +169,7 @@ int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
     if (instance == NULL)
         return 1;
 
-#if defined(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
     DestroyAppInstance_win32(instance);
 #else
     /* Make sure there's an instance name to work with since 

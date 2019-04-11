@@ -1,3 +1,4 @@
+#define USE_CONSOLE_APP
 #include <lgdl/main.h>
 
 int ConsoleMain(int argc, UNICHAR *argv[])

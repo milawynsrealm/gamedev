@@ -1,3 +1,4 @@
 #Source Files
+*.c text
 *.h text
 *.md text
