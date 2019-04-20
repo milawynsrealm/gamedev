@@ -61,15 +61,9 @@ extern int GuiMain(int argc, UNICHAR *argv[]);
 #ifdef USE_CONSOLE_APP
 int wmain(int argc, UNICHAR *argv[])
 {
-    int w_argc;
-    WCHAR** w_argv;
-
-    /* Converts the command line into a usable format */
-    w_argv = CommandLineToArgvW(GetCommandLineW(), &w_argc);
-
-    return ConsoleMain(w_argc, w_argv);
+    return ConsoleMain(argc, argv);
 }
-#else
+#else /* GUI Application */
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nShowCmd)
 {
     int argc;

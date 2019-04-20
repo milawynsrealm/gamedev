@@ -47,6 +47,9 @@ int GetSystemOsName_posix(UNICHAR *osName)
         stringcopy(osName, unameData.sysname);
         stringcat(osName, " ");
         stringcat(osName, unameData.release);
+        stringcat(osName, " (");
+        stringcat(osName, unameData.version);
+        stringcat(osName, " )");
     }
     else
     {
@@ -78,10 +81,9 @@ int GetSystemAppName_posix(char *appName)
 #elif defined(OSTYPE_LINUX)
     extern char *program_invocation_short_name;
     return ((stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
-#else
-    #error System is not supported!
-    return 1;
 #endif
+
+    return 1;
 }
 
 DWORDLONG GetSystemTotalMemory_posix(void)
