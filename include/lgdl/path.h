@@ -51,15 +51,14 @@ UNICHAR *GetPathDirSeperator(void)
 #endif /* _WIN32 */
 }
 
-/* Grabs the user's home directory path used 
-   commonly for application settings and save 
-   files */
-int GetPathHomeDirectory(UNICHAR *path, UNICHAR *folderName)
+/* Grabs the user's home directory path used commonly for 
+   application settings and save files */
+int GetPathConfigDirectory(UNICHAR *path, UNICHAR *folderName)
 {
 #if (CURRENT_OS == OSNAME_WINDOWS)
-    return GetPathHomeDirectory_win32(&path, &folderName);
+    return GetPathConfigDirectory_win32(&path, &folderName);
 #else
-    return GetPathHomeDirectory_posix(&path, &folderName);
+    return GetPathConfigDirectory_posix(&path, &folderName);
 #endif /* _WIN32 */
 }
 

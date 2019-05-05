@@ -31,6 +31,28 @@
 extern "C" {
 #endif
 
+/* Used to make reading source code used to determine the
+   OS type when compiling easy */
+#if defined(__linux__) || defined(__gnu_linux__)
+#define CURRENT_OS OSTYPE_LINUX
+#elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
+      defined(__NetBSD__) || defined(__bsdi__) || \
+      defined(__DragonFly__)
+#define CURRENT_OS OSTYPE_BSD
+#elif defined(__APPLE__) && defined(__MACH__)
+#define CURRENT_OS OSTYPE_OSX
+#elif defined(OS2) || defined(_OS2)
+#define CURRENT_OS OSTYPE_OS2
+#elif defined(_WIN32)
+#define CURRENT_OS OSNAME_WINDOWS
+#elif defined(__ANDROID__)
+#define CURRENT_OS OSNAME_ANDROID
+#elif defined(__BEOS__)
+#define CURRENT_OS OSNAME_BEOS
+#else
+#define CURRENT_OS OSNAME_NONE
+#endif
+
 #ifdef UNICODE
 typedef wchar_t UNICHAR;
 #define _T(x) L##x
@@ -62,12 +84,12 @@ typedef char UNICHAR;
 #define currenttime asctime
 #endif /* UNICODE */
 
-#ifdef _WIN32
+#if (CURRENT_OS == OSNAME_WINDOWS)
 typedef HANDLE APP_INSTANCE;
 #else
 typedef unsigned __int64 DWORDLONG;
 typedef sem_t* APP_INSTANCE;
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 
 /* Used to identify the OS type */
 #define OSNAME_NONE    -1
@@ -111,28 +133,6 @@ typedef sem_t* APP_INSTANCE;
 #else
 #define CURRENT_ARCH ARCH_NONE;
 #endif /* __i386 */
-
-/* Used to make reading source code used to determine the
-   OS type when compiling easy */
-#if defined(__linux__) || defined(__gnu_linux__)
-#define CURRENT_OS OSTYPE_LINUX
-#elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
-      defined(__NetBSD__) || defined(__bsdi__) || \
-      defined(__DragonFly__)
-#define CURRENT_OS OSTYPE_BSD
-#elif defined(__APPLE__) && defined(__MACH__)
-#define CURRENT_OS OSTYPE_OSX
-#elif defined(OS2) || defined(_OS2)
-#define CURRENT_OS OSTYPE_OS2
-#elif defined(_WIN32)
-#define CURRENT_OS OSNAME_WINDOWS
-#elif defined(__ANDROID__)
-#define CURRENT_OS OSNAME_ANDROID
-#elif defined(__BEOS__)
-#define CURRENT_OS OSNAME_BEOS
-#else
-#define CURRENT_OS OSNAME_NONE
-#endif
 
 #ifdef __cplusplus
 }

@@ -26,23 +26,23 @@
 */
 #ifndef PATH_WIN32_H
 #ifndef PATH_WIN32_H
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 
 #ifndef PATH_H
 #error Please use path.h instead.
 #endif /* PATH_H */
 
-#ifdef(_WIN32)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 #include <windef.h>
 #include <winbase.h>
 #include <shlobj.h>
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-int GetPathHomeDirectory_win32(UNICHAR *path, UNICHAR *folderName)
+int GetPathConfigDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 {
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, &path)) == 0)
     {
@@ -71,5 +71,5 @@ int GetPathTempDirectory_win32(UNICHAR *path)
 }
 #endif
 
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 #endif /* PATH_WIN32_H */

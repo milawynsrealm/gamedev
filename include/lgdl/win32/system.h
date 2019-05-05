@@ -51,7 +51,7 @@ int GetSystemOsName_win32(UNICHAR *osName)
         RegCloseKey(hKey);
     }
 
-    /* If no name is found in the registry, then just use Windows */
+    /* If no name is found in the registry, then just use Windows NT */
     if ((res != ERROR_SUCCESS) || (wcslen(osName) == 0))
         stringcopy(osName, _T("Windows NT"));
 
@@ -75,6 +75,7 @@ int IsMinimumOS_win32(int version)
 {
     OSVERSIONINFO osInfo;
 
+    /* Clear the memory before using it */
     ZeroMemory(&osInfo, sizeof(OSVERSIONINFO));
     osInfo.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
 
