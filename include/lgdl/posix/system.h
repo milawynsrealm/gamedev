@@ -53,20 +53,20 @@ int GetSystemOsName_posix(UNICHAR *osName)
     }
     else
     {
-#if (CURRENT_OS == OSTYPE_LINUX)
+#if (CURRENT_OS == OSNAME_LINUX)
         stringcopy(osName, _T("GNU/Linux"));
-#elif (CURRENT_OS == OSTYPE_BSD)
+#elif (CURRENT_OS == OSNAME_BSD)
         stringcopy(osName, _T("BSD"));
 #elif (CURRENT_OS == OSTYPE_OSX)
         stringcopy(osName, _T("macOS"));
 #endif
     }
 
-#if (CURRENT_OS == OSTYPE_LINUX)
+#if (CURRENT_OS == OSNAME_LINUX)
     return OSNAME_LINUX;
-#elif (CURRENT_OS == OSTYPE_BSD)
+#elif (CURRENT_OS == OSNAME_BSD)
     return OSNAME_BSD;
-#elif (CURRENT_OS == OSTYPE_OSX)
+#elif (CURRENT_OS == OSNAME_MACOS)
     return OSNAME_MACOS;
 #endif
     return OSNAME_NONE;
@@ -74,11 +74,11 @@ int GetSystemOsName_posix(UNICHAR *osName)
 
 int GetSystemAppName_posix(char *appName)
 {
-#if (CURRENT_OS == OSTYPE_BSD) || \
-    (CURRENT_OS == OSTYPE_OSX) /* Both BSD and OSX use this method */
+#if (CURRENT_OS == OSNAME_BSD) || \
+    (CURRENT_OS == OSNAME_MACOS) /* Both BSD and OSX use this method */
     stringcopy(appName, getprogname());
     return ((appName == NULL) ? 1 : 0);
-#elif (CURRENT_OS == OSTYPE_LINUX)
+#elif (CURRENT_OS == OSNAME_LINUX)
     extern char *program_invocation_short_name;
     return ((stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
 #endif
