@@ -31,6 +31,16 @@
 extern "C" {
 #endif
 
+/* Used to identify the OS type */
+#define OSNAME_NONE    -1
+#define OSNAME_WINDOWS  0
+#define OSNAME_LINUX    1
+#define OSNAME_BSD      2
+#define OSNAME_MACOS    3
+#define OSNAME_ANDROID  4
+#define OSNAME_BEOS     5
+#define OSNAME_OS2      6
+ 
 /* Used to make reading source code used to determine the
    OS type when compiling easy */
 #if defined(__linux__) || defined(__gnu_linux__)
@@ -90,16 +100,6 @@ typedef HANDLE APP_INSTANCE;
 typedef unsigned __int64 DWORDLONG;
 typedef sem_t* APP_INSTANCE;
 #endif /* OSNAME_WINDOWS */
-
-/* Used to identify the OS type */
-#define OSNAME_NONE    -1
-#define OSNAME_WINDOWS  0
-#define OSNAME_LINUX    1
-#define OSNAME_BSD      2
-#define OSNAME_MACOS    3
-#define OSNAME_ANDROID  4
-#define OSNAME_BEOS     5
-#define OSNAME_OS2      6
 
 /* Used to determine the Architecture type */
 #define ARCH_NONE    -1
