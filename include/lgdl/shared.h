@@ -94,7 +94,7 @@ typedef char UNICHAR;
 #define currenttime asctime
 #endif /* UNICODE */
 
-#if (CURRENT_OS == OSTYPE_WINDOWS)
+#if (CURRENT_OS == OSNAME_WINDOWS)
 typedef HANDLE APP_INSTANCE;
 #else
 typedef unsigned __int64 DWORDLONG;
