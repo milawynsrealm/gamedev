@@ -31,35 +31,36 @@
 extern "C" {
 #endif
 
-#define OSTYPE_LINUX   0
-#define OSTYPE_BSD     1
-#define OSTYPE_OSX     2
-#define OSTYPE_OS2     3
-#define OSTYPE_WINDOWS 4
-#define OSTYPE_ANDROID 5
-#define OSTYPE_BEOS    6
-#define OSTYPE_NONE    7
+/* Used to identify the OS type */
+#define OSNAME_NONE    -1
+#define OSNAME_WINDOWS  0
+#define OSNAME_LINUX    1
+#define OSNAME_BSD      2
+#define OSNAME_MACOS    3
+#define OSNAME_ANDROID  4
+#define OSNAME_BEOS     5
+#define OSNAME_OS2      6
 
 /* Used to make reading source code used to determine the
    OS type when compiling easy */
 #if defined(__linux__) || defined(__gnu_linux__)
-#define CURRENT_OS OSTYPE_LINUX
+#define CURRENT_OS OSNAME_LINUX
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
       defined(__NetBSD__) || defined(__bsdi__) || \
       defined(__DragonFly__)
-#define CURRENT_OS OSTYPE_BSD
+#define CURRENT_OS OSNAME_BSD
 #elif defined(__APPLE__) && defined(__MACH__)
-#define CURRENT_OS OSTYPE_OSX
+#define CURRENT_OS OSNAME_MACOS
 #elif defined(OS2) || defined(_OS2)
-#define CURRENT_OS OSTYPE_OS2
+#define CURRENT_OS OSNAME_OS2
 #elif defined(_WIN32)
-#define CURRENT_OS OSTYPE_WINDOWS
+#define CURRENT_OS OSNAME_WINDOWS
 #elif defined(__ANDROID__)
-#define CURRENT_OS OSTYPE_ANDROID
+#define CURRENT_OS OSNAME_ANDROID
 #elif defined(__BEOS__)
-#define CURRENT_OS OSTYPE_BEOS
+#define CURRENT_OS OSNAME_BEOS
 #else
-#define CURRENT_OS OSTYPE_NONE
+#define CURRENT_OS OSNAME_NONE
 #endif
 
 #ifdef UNICODE
@@ -99,16 +100,6 @@ typedef HANDLE APP_INSTANCE;
 typedef unsigned __int64 DWORDLONG;
 typedef sem_t* APP_INSTANCE;
 #endif /* OSNAME_WINDOWS */
-
-/* Used to identify the OS type */
-#define OSNAME_NONE    -1
-#define OSNAME_WINDOWS  0
-#define OSNAME_LINUX    1
-#define OSNAME_BSD      2
-#define OSNAME_MACOS    3
-#define OSNAME_ANDROID  4
-#define OSNAME_BEOS     5
-#define OSNAME_OS2      6
 
 /* Used to determine the Architecture type */
 #define ARCH_NONE    -1
