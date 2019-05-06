@@ -31,6 +31,15 @@
 extern "C" {
 #endif
 
+#define OSTYPE_LINUX   0
+#define OSTYPE_BSD     1
+#define OSTYPE_OSX     2
+#define OSTYPE_OS2     3
+#define OSTYPE_WINDOWS 4
+#define OSTYPE_ANDROID 5
+#define OSTYPE_BEOS    6
+#define OSTYPE_NONE    7
+
 /* Used to make reading source code used to determine the
    OS type when compiling easy */
 #if defined(__linux__) || defined(__gnu_linux__)
@@ -44,13 +53,13 @@ extern "C" {
 #elif defined(OS2) || defined(_OS2)
 #define CURRENT_OS OSTYPE_OS2
 #elif defined(_WIN32)
-#define CURRENT_OS OSNAME_WINDOWS
+#define CURRENT_OS OSTYPE_WINDOWS
 #elif defined(__ANDROID__)
-#define CURRENT_OS OSNAME_ANDROID
+#define CURRENT_OS OSTYPE_ANDROID
 #elif defined(__BEOS__)
-#define CURRENT_OS OSNAME_BEOS
+#define CURRENT_OS OSTYPE_BEOS
 #else
-#define CURRENT_OS OSNAME_NONE
+#define CURRENT_OS OSTYPE_NONE
 #endif
 
 #ifdef UNICODE
@@ -84,7 +93,7 @@ typedef char UNICHAR;
 #define currenttime asctime
 #endif /* UNICODE */
 
-#if (CURRENT_OS == OSNAME_WINDOWS)
+#if (CURRENT_OS == OSTYPE_WINDOWS)
 typedef HANDLE APP_INSTANCE;
 #else
 typedef unsigned __int64 DWORDLONG;
