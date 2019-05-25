@@ -45,9 +45,18 @@ int GetSystemOsName_win32(UNICHAR *osName)
     dwSize = sizeof(int);
 
     /* Opens the registry key for getting the name of the operating system */
-    if (RegOpenKeyEx(HKEY_CURRENT_USER, _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), 0, KEY_QUERY_VALUE, &hKey) == ERROR_SUCCESS)
+    if (RegOpenKeyEx(HKEY_CURRENT_USER,
+                     _T("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"),
+                     0,
+                     KEY_QUERY_VALUE,
+                     &hKey) == ERROR_SUCCESS)
     {
-        res = RegQueryValueEx(hKey, _T("ProductName"), NULL, NULL, (LPBYTE)osName, &dwSize);
+        res = RegQueryValueEx(hKey,
+                              _T("ProductName"),
+                              NULL,
+                              NULL,
+                              (LPBYTE)osName,
+                              &dwSize);
         RegCloseKey(hKey);
     }
 
@@ -87,8 +96,9 @@ int IsMinimumOS_win32(int version)
         case MINOS_XP: /* Windows XP/2K3 or later */
         {
             if ((osInfo.dwMajorVersion > 6) ||
-               ((osInfo.dwMajorVersion == 5) && (osInfo.dwMinorVersion >= 1)))
-                return 0;
+               ((osInfo.dwMajorVersion == 5) &&
+                (osInfo.dwMinorVersion >= 1)))
+                    return 0;
         }
         case MINOS_VISTA: /* Windows Vista/2008 or later */
         {
@@ -97,17 +107,20 @@ int IsMinimumOS_win32(int version)
         }
         case MINOS_7: /* Windows 7/2008 R2 or later */
         {
-            if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 1))
-                return 0;
+            if ((osInfo.dwMajorVersion > 6) &&
+                (osInfo.dwMajorVersion >= 1))
+                    return 0;
         }
         case MINOS_8: /* Windows 8/2012 or later */
         {
-            if ((osInfo.dwMajorVersion > 6) && (osInfo.dwMajorVersion >= 2))
-                return 0;
+            if ((osInfo.dwMajorVersion > 6) &&
+                (osInfo.dwMajorVersion >= 2))
+                    return 0;
         }
     }
 
-    /* If it gets here, assume the user is using the wrong version of Windows */
+    /* If it gets here, assume the user is
+       using the wrong version of Windows */
     return 1;
 }
 
@@ -115,12 +128,15 @@ APP_INSTANCE CreateAppInstance_win32(UNICHAR *instance_name)
 {
     HANDLE checkInstance = NULL;
     
-    /* The instance name is internal, there's no need for a UNICODE string here */
+    /* The instance name is internal, 
+       there's no need for a UNICODE string here */
     checkInstance = CreateMutex(NULL, FALSE, instance_name);
 
-    /* If there is already an instance of the program, then return null */
-    if ((GetLastError() == ERROR_ALREADY_EXISTS) || (GetLastError() == ERROR_ACCESS_DENIED))
-        return NULL;
+    /* If there is already an instance of 
+       the program, then return null */
+    if ((GetLastError() == ERROR_ALREADY_EXISTS) ||
+        (GetLastError() == ERROR_ACCESS_DENIED))
+            return NULL;
 
     return checkInstance;
 }

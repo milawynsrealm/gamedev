@@ -72,16 +72,16 @@ int GetSystemOsName(UNICHAR *osName)
       (CURRENT_OS == OSTYPE_OSX)
     return GetSystemOsName_posix(osName);
 #elif (CURRENT_OS == OSNAME_ANDROID)
-    strcpy(osName, "Android");
+    stringcopy(osName, "Android");
     return OSNAME_ANDROID;
 #elif (CURRENT_OS == OSNAME_BEOS)
-    strcpy(osName, "BeOS");
+    stringcopy(osName, "BeOS");
     return OSNAME_BEOS;
 #elif defined(CURRENT_OS == OSTYPE_OS2)
-    strcpy(osName, "OS/2");
+    stringcopy(osName, "OS/2");
     return OSNAME_OS2;
 #else
-    strcpy(osName, "Unknown");
+    stringcopy(osName, "Unknown");
     return OSNAME_NONE;
 #endif
 }
