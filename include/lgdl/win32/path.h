@@ -47,7 +47,7 @@ int GetPathConfigDirectory_win32(UNICHAR *path, UNICHAR *folderName)
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, &path)) == 0)
     {
         /* Appends the name of the folder to the final path */
-        stringcopy(&path, folderName);
+        _stringcopy(&path, folderName);
     }
     else
         return 1;

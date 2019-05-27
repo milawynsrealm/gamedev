@@ -62,6 +62,23 @@ int FlashSystemWindow(LgdlWndHandle wndHandle)
     return 0;
 }
 
+int GetCompilerName(UNICHAR *compileName)
+{
+#if defined(__BORLANDC__)
+    _stringcopy(compileName, _T("Borland C++"));
+#elif defined(__clang__)
+    _stringcopy(compileName, _T("Clang"));
+#elif defined(__DMC__)
+    _stringcopy(compileName, _T("Digital Mars"));
+#elif defined(__GNUC__)
+    _stringcopy(compileName, _T("GNU GCC C/C++"));
+#elif defined(_MSC_VER)
+    _stringcopy(compileName, _T("Microsoft Visual C/C++"));
+    _stringcat(compName, _MSC_VER)
+#endif
+    return 0;
+}
+
 /* Grabs the Operating System's name */
 int GetSystemOsName(UNICHAR *osName)
 {
@@ -72,16 +89,16 @@ int GetSystemOsName(UNICHAR *osName)
       (CURRENT_OS == OSTYPE_OSX)
     return GetSystemOsName_posix(osName);
 #elif (CURRENT_OS == OSNAME_ANDROID)
-    stringcopy(osName, "Android");
+    _stringcopy(osName, "Android");
     return OSNAME_ANDROID;
 #elif (CURRENT_OS == OSNAME_BEOS)
-    stringcopy(osName, "BeOS");
+    _stringcopy(osName, "BeOS");
     return OSNAME_BEOS;
 #elif defined(CURRENT_OS == OSTYPE_OS2)
-    stringcopy(osName, "OS/2");
+    _stringcopy(osName, "OS/2");
     return OSNAME_OS2;
 #else
-    stringcopy(osName, "Unknown");
+    _stringcopy(osName, "Unknown");
     return OSNAME_NONE;
 #endif
 }

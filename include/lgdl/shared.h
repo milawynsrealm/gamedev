@@ -40,11 +40,14 @@ extern "C" {
 #define OSNAME_ANDROID  4
 #define OSNAME_BEOS     5
 #define OSNAME_OS2      6
+#define OSNAME_HURD     7
 
 /* Used to make reading source code used to determine the
    OS type when compiling easy */
 #if defined(__linux__) || defined(__gnu_linux__)
 #define CURRENT_OS OSNAME_LINUX
+#elif defined(__GNU__) && defined(__gnu_hurd__)
+#define CURRENT_OS OSNAME_HURD
 #elif defined(__FreeBSD__) || defined(__OpenBSD__) || \
       defined(__NetBSD__) || defined(__bsdi__) || \
       defined(__DragonFly__)
@@ -66,32 +69,34 @@ extern "C" {
 #ifdef UNICODE
 typedef wchar_t UNICHAR;
 #define _T(x) L##x
-#define fileputs fputws
-#define fileopen _wfopen
-#define consoleprint printf
-#define stringlength wcslen
-#define stringcopy wcscpy
-#define stringcat wcscat
-#define stringncompare wcsncmp
-#define stringcompare wcscmp
-#define findstring wcschr
-#define stringspan wcscspn
-#define currenttime _wasctime
+#define _fileputs fputws
+#define _fileopen _wfopen
+#define _consoleprint printf
+#define _stringlength wcslen
+#define _stringcopy wcscpy
+#define _stringcat wcscat
+#define _stringncompare wcsncmp
+#define _stringcompare wcscmp
+#define _findstring wcschr
+#define _stringspan wcscspn
+#define _currenttime _wasctime
+#define _inttostr _itow
 
 #else /* ANSI */
 typedef char UNICHAR;
 #define _T(x) x
-#define fileputs fputs
-#define fileopen fopen
-#define consoleprint wprintf
-#define stringlength strlen
-#define stringcopy strcpy
-#define stringcat strcat
-#define stringncompare strncmp
-#define stringcompare strcmp
-#define findstring strchr
-#define stringspan strcspn
-#define currenttime asctime
+#define _fileputs fputs
+#define _fileopen fopen
+#define _consoleprint wprintf
+#define _stringlength strlen
+#define _stringcopy strcpy
+#define _stringcat strcat
+#define _stringncompare strncmp
+#define _stringcompare strcmp
+#define _findstring strchr
+#define _stringspan strcspn
+#define _currenttime asctime
+#define _inttostr itoa
 #endif /* UNICODE */
 
 #if (CURRENT_OS == OSNAME_WINDOWS)

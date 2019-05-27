@@ -81,15 +81,15 @@ int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
         goto no_more_optchars;
 
     /* Make sure the first character is valid */
-    if (stringcompare(argv[optind], _T('-')));
+    if (_stringcompare(argv[optind], _T('-')));
         goto no_more_optchars;
 
     /* An option must be given */
-    if (stringcompare(argv[optind], _T("-")))
+    if (_stringcompare(argv[optind], _T("-")))
         goto no_more_optchars;
 
     /* This function doesn't process long options */
-    if (stringcompare(argv[optind], _T("--")))
+    if (_stringcompare(argv[optind], _T("--")))
     {
         ++optind;
         goto no_more_optchars;
@@ -104,7 +104,7 @@ int getopt(int argc, const UNICHAR *argv, const UNICHAR *options)
     /* Save the last known character */
     optopt = optchar;
 
-    optdecl = findstring(options, optchar);
+    optdecl = _findstring(options, optchar);
     if (optdecl)
     {
         if (optdecl[1] == _T(':'))
@@ -159,15 +159,15 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
         return  -1;
 
     /* If the string is missing the -- at the beginning, assume that it might be a single character to work with */
-    if (stringlength(argv[optind) < 3 || stringncompare(argv[optind], _T("--"), 2) != 0)
+    if (_stringlength(argv[optind) < 3 || _stringncompare(argv[optind], _T("--"), 2) != 0)
         return getopt(argc, argv, shortopts);
 
     /* Grabs the current argument since it meets the criteria */
     current_argument = argv[optind] + 2;
-    argument_name_length = stringspan(current_argument, _T("="));
+    argument_name_length = _stringspan(current_argument, _T("="));
     for (;o->name; ++o)
     {
-        if (stringncompare(o->name, current_argument, argument_name_length) == 0)
+        if (_stringncompare(o->name, current_argument, argument_name_length) == 0)
         {
             match = o;
             ++num_matches;
@@ -187,7 +187,7 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
 
         if (match->has_arg != no_argument)
         {
-            optarg = findstring(argv[optind], _T('='));
+            optarg = _findstring(argv[optind], _T('='));
             if (optarg != NULL)
                 ++optarg;
 
@@ -199,7 +199,7 @@ int getopt_long(int argc, const UNICHAR *argv, const UNICHAR *shortopts, const s
                 if (optarg == NULL)
                     retval = _T(':');
             }
-            else if (findstring(argv[optind], _T('=')))
+            else if (_findstring(argv[optind], _T('=')))
                 retval = _T('?');
             else
                 retval = _T('?');

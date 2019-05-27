@@ -62,7 +62,7 @@ int GetSystemOsName_win32(UNICHAR *osName)
 
     /* If no name is found in the registry, then just use Windows NT */
     if ((res != ERROR_SUCCESS) || (wcslen(osName) == 0))
-        stringcopy(osName, _T("Windows NT"));
+        _stringcopy(osName, _T("Windows NT"));
 
     /* Lets the program know it's Windows */
     return OSNAME_WINDOWS;

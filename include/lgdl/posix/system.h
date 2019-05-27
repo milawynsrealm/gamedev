@@ -44,21 +44,23 @@ int GetSystemOsName_posix(UNICHAR *osName)
     uname(&unameData);
     if (unameData == 0)
     {
-        stringcopy(osName, unameData.sysname);
-        stringcat(osName, " ");
-        stringcat(osName, unameData.release);
-        stringcat(osName, " (");
-        stringcat(osName, unameData.version);
-        stringcat(osName, " )");
+        _stringcopy(osName, unameData.sysname);
+        _stringcat(osName, " ");
+        _stringcat(osName, unameData.release);
+        _stringcat(osName, " (");
+        _stringcat(osName, unameData.version);
+        _stringcat(osName, " )");
     }
     else
     {
 #if (CURRENT_OS == OSNAME_LINUX)
-        stringcopy(osName, _T("GNU/Linux"));
+        _stringcopy(osName, _T("GNU/Linux"));
+#elif (CURRENT_OS == OSNAME_HURD)
+        _stringcopy(osName, _T("GNU/Hurd"));
 #elif (CURRENT_OS == OSNAME_BSD)
-        stringcopy(osName, _T("BSD"));
+        _stringcopy(osName, _T("BSD"));
 #elif (CURRENT_OS == OSTYPE_OSX)
-        stringcopy(osName, _T("macOS"));
+        _stringcopy(osName, _T("macOS"));
 #endif
     }
 
@@ -76,11 +78,11 @@ int GetSystemAppName_posix(char *appName)
 {
 #if (CURRENT_OS == OSNAME_BSD) || \
     (CURRENT_OS == OSNAME_MACOS) /* Both BSD and OSX use this method */
-    stringcopy(appName, getprogname());
+    _stringcopy(appName, getprogname());
     return ((appName == NULL) ? 1 : 0);
 #elif (CURRENT_OS == OSNAME_LINUX)
     extern char *program_invocation_short_name;
-    return ((stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
+    return ((_stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
 #endif
 
     return 1;

@@ -42,31 +42,31 @@ extern "C" {
 int GetPathConfigDirectory_posix(UNICHAR *path, UNICHAR *folderName)
 {
 #if (CURRENT_OS == OSTYPE_OSX) /* macOS */
-    stringcopy(&path, getenv("HOME"));
-    stringcat(&path, "Library/Application Support/");
-    stringcat(&path, folderName);
+    _stringcopy(&path, getenv("HOME"));
+    _stringcat(&path, "Library/Application Support/");
+    _stringcat(&path, folderName);
 #else /* GNU/Linux, BSD, etc. */
-    stringcopy(&path, getenv("XDG_CONFIG_HOME"));
+    _stringcopy(&path, getenv("XDG_CONFIG_HOME"));
 
     /* If XDG_CONFIG_HOME is not available, then use HOME as the 
        backup solution */
-    if (stringlength(&path) == 0)
+    if (_stringlength(&path) == 0)
     {
         /* /home/<user>/.local/share/ */
-        if (stringcopy(&path, getenv("HOME")) == NULL)
+        if (_stringcopy(&path, getenv("HOME")) == NULL)
             return 1;
 
-        stringcat(&path, ".local/share/");
+        _stringcat(&path, ".local/share/");
     }
 
     /* Add the folder name */
-    if ((stringlength(&path) != 0) && (folderName != NULL))
-        stringcat(&path, folderName);
+    if ((_stringlength(&path) != 0) && (folderName != NULL))
+        _stringcat(&path, folderName);
 
 #endif /* OSTYPE_OSX */
 
     /* If the length of the string is nothing, assume failure */
-    return stringlength(&path) == 0 ? 1 : 0;
+    return _stringlength(&path) == 0 ? 1 : 0;
 }
 
 int GetPathAppDirectory_posix(UNICHAR *path)
@@ -78,7 +78,7 @@ int GetPathAppDirectory_posix(UNICHAR *path)
 int GetPathTempDirectory_posix(UNICHAR *path)
 {
     /* Returns the location of the temp directory */
-    return ((stringcopy(&path, "/tmp") == NULL) ? 1 : 0);
+    return ((_stringcopy(&path, "/tmp") == NULL) ? 1 : 0);
 }
 
 #ifdef __cplusplus
