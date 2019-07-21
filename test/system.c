@@ -50,10 +50,10 @@ void GetArchName(int osArch, UNICHAR *osName)
 
 void CheckWinVersions(void)
 {
-    consoleprint(_T("\t- Windows XP or later: %s"), (IsMinimumOS(MINOS_XP) ? _T("TRUE") : _T("FALSE")));
-    consoleprint(_T("\t- Windows Vista or later: %s"), (IsMinimumOS(MINOS_VISTA) ? _T("TRUE") : _T("FALSE")));
-    consoleprint(_T("\t- Windows 7 or later: %s"), (IsMinimumOS(MINOS_7) ? _T("TRUE") : _T("FALSE")));
-    consoleprint(_T("\t- Windows 8 or later: %s"), (IsMinimumOS(MINOS_8) ? _T("TRUE") : _T("FALSE")));
+    TESTPRINT(_T("\t- Windows XP or later: %s"), (IsMinimumOS(MINOS_XP) ? _T("TRUE") : _T("FALSE")));
+    TESTPRINT(_T("\t- Windows Vista or later: %s"), (IsMinimumOS(MINOS_VISTA) ? _T("TRUE") : _T("FALSE")));
+    TESTPRINT(_T("\t- Windows 7 or later: %s"), (IsMinimumOS(MINOS_7) ? _T("TRUE") : _T("FALSE")));
+    TESTPRINT(_T("\t- Windows 8 or later: %s"), (IsMinimumOS(MINOS_8) ? _T("TRUE") : _T("FALSE")));
 }
 
 int ConsoleMain(int argc, UNICHAR *argv[])

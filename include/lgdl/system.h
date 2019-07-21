@@ -65,16 +65,26 @@ int FlashSystemWindow(LgdlWndHandle wndHandle)
 int GetCompilerName(UNICHAR *compileName)
 {
 #if defined(__BORLANDC__)
-    _stringcopy(compileName, _T("Borland C++"));
+    _stringcopy(compileName, _T("Borland C++ "));
+    _stringcat(compileName, _inttostr(__BORLANDC__));
 #elif defined(__clang__)
-    _stringcopy(compileName, _T("Clang"));
+    _stringcopy(compileName, _T("Clang "));
+    _stringcat(compileName, _inttostr(__clang_major__));
+    _stringcat(compileName, _T("."));
+    _stringcat(compileName, _inttostr(__clang_minor__));
 #elif defined(__DMC__)
-    _stringcopy(compileName, _T("Digital Mars"));
+    _stringcopy(compileName, _T("Digital Mars "));
+    _stringcat(compileName, _inttostr(__DMC__));
 #elif defined(__GNUC__)
-    _stringcopy(compileName, _T("GNU GCC C/C++"));
+    _stringcopy(compileName, _T("GNU GCC C/C++ "));
+    _stringcat(compileName, _inttostr(__GNUC__));
+    _stringcat(compileName, _T("."));
+    _stringcat(compileName, _inttostr(__GNUC_MINOR__));
 #elif defined(_MSC_VER)
-    _stringcopy(compileName, _T("Microsoft Visual C/C++"));
-    _stringcat(compName, _MSC_VER)
+    _stringcopy(compileName, _T("Microsoft Visual C/C++ "));
+    _stringcat(compileName, _inttostr(_MSC_VER));
+#else
+    _stringcopy(compileName, _T("Unknown Compiler"));
 #endif
     return 0;
 }
