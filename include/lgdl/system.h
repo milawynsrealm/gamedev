@@ -190,7 +190,7 @@ APP_INSTANCE CreateAppInstance(UNICHAR *instance_name)
     return NULL;
 }
 
-int DestroyAppInstance(UNICHAR *instance_name, APP_INSTANCE instance)
+int DestroyAppInstance(char *instance_name, APP_INSTANCE instance)
 {
     /* Make sure there's something to work with */
     if (instance == NULL)

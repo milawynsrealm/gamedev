@@ -51,6 +51,7 @@ int GetSystemOsName_win32(UNICHAR *osName)
                      KEY_QUERY_VALUE,
                      &hKey) == ERROR_SUCCESS)
     {
+        /* Look for the registry name */
         res = RegQueryValueEx(hKey,
                               _T("ProductName"),
                               NULL,
@@ -124,13 +125,13 @@ int IsMinimumOS_win32(int version)
     return 1;
 }
 
-APP_INSTANCE CreateAppInstance_win32(UNICHAR *instance_name)
+APP_INSTANCE CreateAppInstance_win32(char *instance_name)
 {
     HANDLE checkInstance = NULL;
     
-    /* The instance name is internal, 
+    /* The instance name is only used here,
        there's no need for a UNICODE string here */
-    checkInstance = CreateMutex(NULL, FALSE, instance_name);
+    checkInstance = CreateMutexA(NULL, FALSE, instance_name);
 
     /* If there is already an instance of 
        the program, then return null */

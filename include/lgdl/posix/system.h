@@ -41,9 +41,14 @@ int GetSystemOsName_posix(UNICHAR *osName)
 {
     struct utsname unameData;
 
+    /* Try to grab the name of the operating system the computer
+       the user is currently using. */
     uname(&unameData);
     if (unameData == 0)
     {
+        /* Grabs the name of the operating system and version
+           so it can better help with debugging. */
+        /* Linux x.x.xx (xx) */
         _stringcopy(osName, unameData.sysname);
         _stringcat(osName, " ");
         _stringcat(osName, unameData.release);
@@ -53,6 +58,8 @@ int GetSystemOsName_posix(UNICHAR *osName)
     }
     else
     {
+        /* If uname doesn't work, then at least try to get the
+           name of the operating system. */
 #if (CURRENT_OS == OSNAME_LINUX)
         _stringcopy(osName, _T("GNU/Linux"));
 #elif (CURRENT_OS == OSNAME_HURD)
@@ -61,15 +68,20 @@ int GetSystemOsName_posix(UNICHAR *osName)
         _stringcopy(osName, _T("BSD"));
 #elif (CURRENT_OS == OSTYPE_OSX)
         _stringcopy(osName, _T("macOS"));
+#else
+        _stringcopy(osName, _T("POSIX-based OS"));
 #endif
     }
 
+    /* Return the operating system type */
 #if (CURRENT_OS == OSNAME_LINUX)
     return OSNAME_LINUX;
 #elif (CURRENT_OS == OSNAME_BSD)
     return OSNAME_BSD;
 #elif (CURRENT_OS == OSNAME_MACOS)
     return OSNAME_MACOS;
+#elif (CURRENT_OS == OSNAME_HURD)
+    return OSNAME_HURD;
 #endif
     return OSNAME_NONE;
 }
@@ -77,7 +89,8 @@ int GetSystemOsName_posix(UNICHAR *osName)
 int GetSystemAppName_posix(char *appName)
 {
 #if (CURRENT_OS == OSNAME_BSD) || \
-    (CURRENT_OS == OSNAME_MACOS) /* Both BSD and OSX use this method */
+    (CURRENT_OS == OSNAME_MACOS)
+    /* Both BSD and OSX use this method */
     _stringcopy(appName, getprogname());
     return ((appName == NULL) ? 1 : 0);
 #elif (CURRENT_OS == OSNAME_LINUX)
@@ -112,7 +125,7 @@ DWORDLONG GetSystemTotalMemory_posix(void)
     return (DWORDLONG)mb;
 }
 
-APP_INSTANCE CreateAppInstance_posix(UNICHAR *instance_name)
+APP_INSTANCE CreateAppInstance_posix(char *instance_name)
 {
     sem_t *testSem;
 
@@ -126,8 +139,10 @@ APP_INSTANCE CreateAppInstance_posix(UNICHAR *instance_name)
     return testSem;
 }
 
-void DestroyAppInstance_posix(UNICHAR *instance_name, APP_INSTANCE instance)
+void DestroyAppInstance_posix(char *instance_name, APP_INSTANCE instance)
 {
+    /* Remove the application instance once it's done so it can be 
+       used later on */
     sem_unlink(instance_name);
     sem_close(instance);
 }
