@@ -118,6 +118,7 @@ int IsMinimumOS_win32(int version)
                 (osInfo.dwMajorVersion >= 2))
                     return 0;
         }
+        default:break;
     }
 
     /* If it gets here, assume the user is
@@ -129,11 +130,12 @@ APP_INSTANCE CreateAppInstance_win32(char *instance_name)
 {
     HANDLE checkInstance = NULL;
     
-    /* The instance name is only used here,
-       there's no need for a UNICODE string here */
+    /* The instance name is only used here, there's no need 
+       for a UNICODE string here since the program user 
+       shouldn't see this anyways. */
     checkInstance = CreateMutexA(NULL, FALSE, instance_name);
 
-    /* If there is already an instance of 
+    /* If there is already an instance of
        the program, then return null */
     if ((GetLastError() == ERROR_ALREADY_EXISTS) ||
         (GetLastError() == ERROR_ACCESS_DENIED))

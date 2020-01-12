@@ -43,8 +43,7 @@ int GetSystemOsName_posix(UNICHAR *osName)
 
     /* Try to grab the name of the operating system the computer
        the user is currently using. */
-    uname(&unameData);
-    if (unameData == 0)
+    if (uname(&unameData) == 0)
     {
         /* Grabs the name of the operating system and version
            so it can better help with debugging. */
@@ -65,7 +64,7 @@ int GetSystemOsName_posix(UNICHAR *osName)
 #elif (CURRENT_OS == OSNAME_HURD)
         _stringcopy(osName, _T("GNU/Hurd"));
 #elif (CURRENT_OS == OSNAME_BSD)
-        _stringcopy(osName, _T("BSD"));
+        _stringcopy(osName, _T("BSD-based"));
 #elif (CURRENT_OS == OSTYPE_OSX)
         _stringcopy(osName, _T("macOS"));
 #else

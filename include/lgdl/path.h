@@ -42,7 +42,7 @@ extern "C" {
 
 /* Windows uses a different path separator 
    than other operating systems. */
-UNICHAR *GetPathDirSeperator(void)
+UNICHAR *GetSystemDirSeperator(void)
 {
 #if (CURRENT_OS == OSNAME_WINDOWS)
     return L'\\';
