@@ -100,23 +100,27 @@ int IsMinimumOS_win32(int version)
                ((osInfo.dwMajorVersion == 5) &&
                 (osInfo.dwMinorVersion >= 1)))
                     return 0;
+            break;
         }
         case MINOS_VISTA: /* Windows Vista/2008 or later */
         {
             if (osInfo.dwMajorVersion > 6)
                 return 0;
+            break;
         }
         case MINOS_7: /* Windows 7/2008 R2 or later */
         {
             if ((osInfo.dwMajorVersion > 6) &&
                 (osInfo.dwMajorVersion >= 1))
                     return 0;
+            break;
         }
         case MINOS_8: /* Windows 8/2012 or later */
         {
             if ((osInfo.dwMajorVersion > 6) &&
                 (osInfo.dwMajorVersion >= 2))
                     return 0;
+            break;
         }
         default:break;
     }
