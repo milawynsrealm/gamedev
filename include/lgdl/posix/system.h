@@ -93,6 +93,7 @@ int GetSystemAppName_posix(char *appName)
     _stringcopy(appName, getprogname());
     return ((appName == NULL) ? 1 : 0);
 #elif (CURRENT_OS == OSNAME_LINUX)
+    /* Linux seems to prefer this method */
     extern char *program_invocation_short_name;
     return ((_stringcopy(appName, program_invocation_short_name) == NULL) ? 1 : 0);
 #endif

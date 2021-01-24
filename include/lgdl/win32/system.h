@@ -26,7 +26,7 @@
 */
 #ifndef SYSTEM_WIN32_H
 #define SYSTEM_WIN32_H
-#ifdef _WIN32
+#if (CURRENT_OS == OSNAME_WINDOWS)
 
 #ifndef SYSTEM_H
 #error Please use system.h instead.
@@ -41,6 +41,12 @@ int GetSystemOsName_win32(UNICHAR *osName)
     HKEY hKey;
     LONG res = ERROR_SUCCESS;
     DWORD dwSize;
+    OSVERSIONINFO winVer;
+
+    ZeroMemory(&winVer, sizeof(OSVERSIONINFO));
+    winVer.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+    GetVersionEx(&winVer);
 
     dwSize = sizeof(int);
 
@@ -58,12 +64,26 @@ int GetSystemOsName_win32(UNICHAR *osName)
                               NULL,
                               (LPBYTE)osName,
                               &dwSize);
+
+        _stringcat(osName, _T(" "));
+
         RegCloseKey(hKey);
     }
 
     /* If no name is found in the registry, then just use Windows NT */
     if ((res != ERROR_SUCCESS) || (wcslen(osName) == 0))
-        _stringcopy(osName, _T("Windows NT"));
+    {
+        _stringcopy(osName, _T("Windows NT "));
+    }
+
+    if (osName != NULL)
+    {
+        _stringcat(osName, _itot(winVer.dwMajorVersion));
+        _stringcat(osName, _T("."));
+        _stringcat(osName, _itot(winVer.dwMinorVersion));
+        _stringcat(osName, _T("."));
+        _stringcat(osName, _itot(winVer.dwBuildNumber));
+    }
 
     /* Lets the program know it's Windows */
     return OSNAME_WINDOWS;
@@ -158,5 +178,5 @@ void DestroyAppInstance_win32(APP_INSTANCE instance)
 }
 #endif
 
-#endif /* _WIN32 */
+#endif /* OSNAME_WINDOWS */
 #endif /* SYSTEM_WIN32_H */

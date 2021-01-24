@@ -32,11 +32,9 @@
 #error Please use path.h instead.
 #endif /* PATH_H */
 
-#if (CURRENT_OS == OSNAME_WINDOWS)
 #include <windef.h>
 #include <winbase.h>
 #include <shlobj.h>
-#endif /* OSNAME_WINDOWS */
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,6 +42,7 @@ extern "C" {
 
 int GetPathConfigDirectory_win32(UNICHAR *path, UNICHAR *folderName)
 {
+    /* Grabs the configuration path for Windows NT systems */
     if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_APPDATA, NULL, 0, &path)) == 0)
     {
         /* Appends the name of the folder to the final path */
