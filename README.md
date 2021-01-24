@@ -16,7 +16,7 @@ Compiling this library should be easy since all you have to do is just drop the 
 * advapi32
 * kernel32
 
-### Disclaimer ###
+## Disclaimer ##
 
 This project is the result of experimentation with cross-platform code as a side hobby. Not all of it has been formally tested in an actual development enviornment, so make sure you test it before you actually use it. Also, if you find any bugs or want to provide any enhancements, don't hesitate to do a pull request. I'm not too picky, and as long as it works, I'll most likely pull it.
 
