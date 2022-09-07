@@ -23,3 +23,7 @@ This project is the result of experimentation with cross-platform code as a side
 ## License ##
 
 The code is licensed under a Modified BSD License.
+
+## Future Development ##
+
+This particular project is not being worked on, and instead, is being worked on [here](https://codeberg.org/milawynsrealm/libcrsptf). This is mostly here for archival purposes only.
